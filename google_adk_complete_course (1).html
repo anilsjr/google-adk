@@ -1,0 +1,2933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google ADK Mastery — Beginner to Advanced</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   RESET & ROOT
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f6f8;
+  --bg2:#ffffff;
+  --bg3:#f0f2f5;
+  --border:rgba(0,0,0,0.08);
+  --border2:rgba(0,0,0,0.14);
+  --text:#1a1d23;
+  --muted:#8a90a0;
+  --muted2:#5a6070;
+  --w1:#16a34a;   /* week 1 - green */
+  --w2:#2563eb;   /* week 2 - blue */
+  --w3:#d97706;   /* week 3 - amber */
+  --w4:#db2777;   /* week 4 - pink */
+  --accent:#1d6a3e;
+  --accent-bg:#e8f5ee;
+  --mono:'JetBrains Mono',monospace;
+  --serif:'Instrument Serif',serif;
+  --sans:'Syne',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:15px;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#e8eaed}
+::-webkit-scrollbar-thumb{background:#b0b8c8;border-radius:4px}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR NAV
+═══════════════════════════════════════════════ */
+.sidebar{
+  position:fixed;
+  left:0;top:0;
+  width:260px;height:100vh;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  z-index:100;
+  padding:24px 0 40px;
+}
+.sidebar-logo{
+  padding:0 20px 20px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:16px;
+}
+.sidebar-logo .logo-tag{
+  font-family:var(--mono);font-size:10px;
+  color:var(--accent);letter-spacing:0.15em;
+  text-transform:uppercase;margin-bottom:4px;
+}
+.sidebar-logo h2{
+  font-size:18px;font-weight:700;
+  color:var(--text);line-height:1.2;
+}
+.nav-week{margin-bottom:4px}
+.nav-week-header{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 20px;
+  font-size:10px;font-weight:600;
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:8px;
+  cursor:pointer;
+}
+.nav-week-header .wdot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.nav-item{
+  display:block;
+  padding:7px 20px 7px 36px;
+  font-size:12.5px;color:var(--muted2);
+  text-decoration:none;
+  border-left:2px solid transparent;
+  transition:all 0.15s;
+  cursor:pointer;
+}
+.nav-item:hover{color:var(--text);background:rgba(0,0,0,0.04)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:rgba(29,106,62,0.07)}
+.nav-progress{
+  padding:16px 20px 0;
+  border-top:1px solid var(--border);
+  margin-top:16px;
+}
+.nav-progress p{font-size:11px;color:var(--muted);margin-bottom:8px}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--w1);border-radius:2px;width:0%;transition:width 0.4s}
+
+/* ═══════════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════════ */
+.main{margin-left:260px;min-height:100vh}
+.content{max-width:820px;margin:0 auto;padding:48px 40px 120px}
+
+/* ═══════════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════════ */
+.hero{
+  text-align:center;
+  padding:80px 0 60px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:80px;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  width:600px;height:400px;
+  background:radial-gradient(ellipse at 50% 30%, rgba(22,163,74,0.07) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;
+  color:var(--w1);letter-spacing:0.12em;
+  text-transform:uppercase;margin-bottom:24px;
+  padding:6px 14px;border:1px solid rgba(22,163,74,0.3);
+  border-radius:20px;background:rgba(22,163,74,0.07);
+}
+.hero-eyebrow::before{content:'●';font-size:6px}
+.hero h1{
+  font-family:var(--serif);
+  font-size:clamp(36px,5vw,64px);
+  font-weight:400;
+  line-height:1.1;
+  color:#0f1218;
+  margin-bottom:20px;
+}
+.hero h1 em{font-style:italic;color:var(--w1)}
+.hero-sub{
+  font-size:16px;color:var(--muted2);
+  max-width:520px;margin:0 auto 40px;
+  line-height:1.7;font-family:var(--sans);font-weight:400;
+}
+.hero-stats{
+  display:flex;justify-content:center;gap:40px;flex-wrap:wrap;
+}
+.hero-stat .num{
+  font-family:var(--mono);font-size:28px;font-weight:500;
+  color:var(--w1);display:block;
+}
+.hero-stat .label{font-size:12px;color:var(--muted);letter-spacing:0.05em}
+
+/* ═══════════════════════════════════════════════
+   WEEK BANNERS
+═══════════════════════════════════════════════ */
+.week-banner{
+  border-radius:14px;
+  padding:28px 28px 24px;
+  margin-bottom:40px;
+  position:relative;overflow:hidden;
+}
+.week-banner::before{
+  content:'';position:absolute;
+  right:-20px;top:-20px;
+  width:160px;height:160px;border-radius:50%;
+  opacity:0.06;
+}
+.w1-banner{background:rgba(22,163,74,0.05);border:1px solid rgba(22,163,74,0.18)}
+.w1-banner::before{background:var(--w1)}
+.w2-banner{background:rgba(37,99,235,0.05);border:1px solid rgba(37,99,235,0.18)}
+.w2-banner::before{background:var(--w2)}
+.w3-banner{background:rgba(217,119,6,0.05);border:1px solid rgba(217,119,6,0.18)}
+.w3-banner::before{background:var(--w3)}
+.w4-banner{background:rgba(219,39,119,0.05);border:1px solid rgba(219,39,119,0.18)}
+.w4-banner::before{background:var(--w4)}
+.week-banner-tag{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.15em;text-transform:uppercase;
+  margin-bottom:8px;font-weight:500;
+}
+.w1-banner .week-banner-tag{color:var(--w1)}
+.w2-banner .week-banner-tag{color:var(--w2)}
+.w3-banner .week-banner-tag{color:var(--w3)}
+.w4-banner .week-banner-tag{color:var(--w4)}
+.week-banner h2{
+  font-size:22px;font-weight:700;color:#0f1218;margin-bottom:8px;
+}
+.week-banner p{font-size:14px;color:var(--muted2);max-width:560px}
+.week-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.pill{
+  font-family:var(--mono);font-size:11px;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(255,255,255,0.06);color:var(--muted2);
+}
+
+/* ═══════════════════════════════════════════════
+   LECTURE CARDS
+═══════════════════════════════════════════════ */
+.lecture{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:20px;
+  overflow:hidden;
+}
+.lecture-header{
+  padding:20px 24px;
+  cursor:pointer;
+  display:flex;align-items:flex-start;gap:16px;
+  transition:background 0.15s;
+}
+.lecture-header:hover{background:rgba(0,0,0,0.02)}
+.lecture-num{
+  font-family:var(--mono);font-size:11px;
+  padding:3px 8px;border-radius:4px;
+  flex-shrink:0;margin-top:2px;font-weight:500;
+}
+.lecture-info{flex:1}
+.lecture-title{font-size:16px;font-weight:600;color:#0f1218;margin-bottom:4px}
+.lecture-meta{font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+.lecture-meta span{display:flex;align-items:center;gap:4px}
+.lecture-toggle{
+  font-family:var(--mono);font-size:14px;
+  color:var(--muted);transition:transform 0.2s;flex-shrink:0;
+}
+.lecture.open .lecture-toggle{transform:rotate(90deg)}
+.lecture-body{
+  display:none;
+  padding:0 24px 28px;
+  border-top:1px solid var(--border);
+}
+.lecture.open .lecture-body{display:block}
+
+/* ═══════════════════════════════════════════════
+   CONTENT ELEMENTS
+═══════════════════════════════════════════════ */
+.section-label{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--w1);margin:24px 0 10px;font-weight:500;
+}
+.explain{
+  background:#f8fafb;
+  border-left:3px solid var(--w1);
+  padding:16px 18px;border-radius:0 8px 8px 0;
+  margin:14px 0;font-size:14px;line-height:1.7;
+  color:var(--muted2);
+}
+.explain strong{color:var(--text);font-weight:600}
+.explain.blue{border-left-color:var(--w2)}
+.explain.amber{border-left-color:var(--w3)}
+.explain.pink{border-left-color:var(--w4)}
+.analogy{
+  background:rgba(22,163,74,0.04);
+  border:1px solid rgba(22,163,74,0.18);
+  border-radius:10px;padding:16px 18px;margin:14px 0;
+  font-size:14px;line-height:1.7;
+}
+.analogy::before{
+  content:'🧠 Think of it like this:';
+  display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:0.1em;color:var(--w1);margin-bottom:8px;
+  font-weight:500;
+}
+.analogy.amber{background:rgba(217,119,6,0.04);border-color:rgba(217,119,6,0.18)}
+.analogy.amber::before{color:var(--w3)}
+.warn{
+  background:rgba(217,119,6,0.05);
+  border:1px solid rgba(217,119,6,0.22);
+  border-radius:8px;padding:14px 16px;margin:14px 0;
+  font-size:13px;color:#7c4f0a;
+}
+.warn::before{content:'⚠️  ';font-size:13px}
+.tip-box{
+  background:rgba(37,99,235,0.05);
+  border:1px solid rgba(37,99,235,0.18);
+  border-radius:8px;padding:14px 16px;margin:14px 0;
+  font-size:13px;color:#1e3a70;
+}
+.tip-box::before{content:'💡  ';font-size:13px}
+
+/* Code */
+.code-block{
+  background:#1e2330;
+  border:1px solid #2d3348;
+  border-radius:10px;margin:14px 0;overflow:hidden;
+}
+.code-block-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;border-bottom:1px solid #2d3348;
+  background:#252a3a;
+}
+.code-block-header .filename{
+  font-family:var(--mono);font-size:12px;color:#7a8aaa;
+}
+.code-block-header .lang{
+  font-family:var(--mono);font-size:10px;
+  color:#566080;letter-spacing:0.1em;text-transform:uppercase;
+}
+.code-block pre{
+  padding:20px;overflow-x:auto;
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+  color:#cdd6f4;
+}
+.code-block pre .kw{color:#cba6f7}
+.code-block pre .fn{color:#89b4fa}
+.code-block pre .str{color:#a6e3a1}
+.code-block pre .cm{color:#45475a;font-style:italic}
+.code-block pre .num{color:#fab387}
+.code-block pre .cls{color:#89dceb}
+.code-block pre .var{color:#f38ba8}
+.code-block pre .dec{color:#f9e2af}
+
+/* Steps */
+.steps{counter-reset:step;margin:16px 0}
+.step{
+  display:flex;gap:16px;margin-bottom:20px;
+  counter-increment:step;
+}
+.step::before{
+  content:counter(step);
+  min-width:28px;height:28px;border-radius:50%;
+  background:#eef2ff;border:1px solid #c7d2fe;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  color:var(--w2);flex-shrink:0;margin-top:1px;
+}
+.step-content h4{font-size:14px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.step-content p{font-size:13px;color:var(--muted2);line-height:1.6}
+
+/* Output box */
+.output{
+  background:#f0faf4;
+  border:1px solid rgba(22,163,74,0.25);
+  border-radius:10px;padding:16px 20px;margin:14px 0;
+  font-family:var(--mono);font-size:13px;line-height:1.7;
+  color:#15803d;
+}
+.output::before{
+  content:'OUTPUT';display:block;font-size:9px;
+  letter-spacing:0.15em;color:#86a898;margin-bottom:8px;
+}
+
+/* Key concepts grid */
+.concepts{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;margin:14px 0;
+}
+.concept-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:10px;padding:16px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.04);
+}
+.concept-card .icon{font-size:20px;margin-bottom:8px;display:block}
+.concept-card h4{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.concept-card p{font-size:12px;color:var(--muted2);line-height:1.5}
+
+/* CMD line */
+.cmd{
+  display:flex;align-items:center;gap:10px;
+  background:#1e2330;border:1px solid #2d3348;
+  border-radius:8px;padding:12px 16px;margin:8px 0;
+  font-family:var(--mono);font-size:13px;
+}
+.cmd-ps{color:#4ade80}
+.cmd code{color:#e2e8f0}
+.cmd-note{margin-left:auto;font-size:11px;color:#566080}
+
+/* Comparison table */
+.comp-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:13px}
+.comp-table th{
+  text-align:left;padding:10px 14px;
+  border-bottom:1px solid var(--border2);
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);
+}
+.comp-table td{
+  padding:10px 14px;border-bottom:1px solid var(--border);
+  color:var(--muted2);vertical-align:top;
+}
+.comp-table td:first-child{color:var(--text);font-weight:500;font-size:13px}
+.comp-table tr:last-child td{border-bottom:none}
+
+/* Quiz */
+.quiz{
+  background:#f8fafc;border:1px solid var(--border);
+  border-radius:12px;padding:20px;margin:20px 0;
+}
+.quiz h4{font-size:14px;font-weight:600;margin-bottom:14px;color:var(--text)}
+.quiz-q{font-size:13px;color:var(--muted2);margin-bottom:12px}
+.quiz-options{display:flex;flex-direction:column;gap:8px}
+.quiz-opt{
+  display:flex;align-items:flex-start;gap:10px;
+  background:#fff;border:1px solid var(--border);
+  border-radius:8px;padding:10px 14px;cursor:pointer;
+  font-size:13px;color:var(--muted2);transition:all 0.15s;
+}
+.quiz-opt:hover{border-color:var(--border2);color:var(--text);background:#fafafa}
+.quiz-opt.correct{border-color:var(--w1);background:rgba(22,163,74,0.05);color:#15803d}
+.quiz-opt.wrong{border-color:#e11d48;background:rgba(225,29,72,0.05);color:#be123c}
+.quiz-key{
+  font-family:var(--mono);font-size:11px;
+  width:20px;height:20px;border-radius:4px;
+  background:var(--bg3);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-top:1px;
+}
+
+/* h3 divider */
+.lecture-body h3{
+  font-size:15px;font-weight:700;color:#0f1218;
+  margin:28px 0 12px;padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+
+/* Agent diagram */
+.agent-diagram{
+  background:#f8fafc;border:1px solid var(--border);
+  border-radius:12px;padding:24px;margin:14px 0;
+  display:flex;align-items:center;gap:0;
+  overflow-x:auto;
+}
+.agent-box{
+  min-width:120px;background:#fff;
+  border:1px solid var(--border2);border-radius:8px;
+  padding:12px 14px;text-align:center;flex-shrink:0;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+.agent-box .ab-icon{font-size:22px;margin-bottom:6px}
+.agent-box .ab-name{font-size:12px;font-weight:600;color:var(--text)}
+.agent-box .ab-type{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+.agent-arrow{
+  font-size:18px;color:var(--muted);
+  padding:0 10px;flex-shrink:0;
+}
+.agent-box.root{border-color:rgba(22,163,74,0.4);background:rgba(22,163,74,0.04)}
+.agent-box.root .ab-name{color:var(--w1)}
+
+/* Checklist */
+.checklist{list-style:none;margin:12px 0}
+.checklist li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:6px 0;font-size:14px;color:var(--muted2);
+  border-bottom:1px solid var(--border);
+}
+.checklist li:last-child{border:none}
+.checklist li::before{content:'✓';color:var(--w1);font-weight:700;flex-shrink:0}
+
+/* summary box */
+.summary{
+  background:linear-gradient(135deg,rgba(22,163,74,0.05),rgba(37,99,235,0.04));
+  border:1px solid rgba(22,163,74,0.18);
+  border-radius:12px;padding:20px;margin:20px 0;
+}
+.summary h4{color:var(--w1);font-size:13px;font-family:var(--mono);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:10px}
+
+/* ═══════════════════════════════════════════════
+   MOBILE TOGGLE
+═══════════════════════════════════════════════ */
+.mob-toggle{
+  display:none;position:fixed;
+  bottom:20px;right:20px;
+  width:48px;height:48px;border-radius:50%;
+  background:var(--w1);color:#fff;
+  font-size:20px;border:none;cursor:pointer;z-index:200;
+  align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(22,163,74,0.35);
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform 0.25s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .content{padding:24px 16px 80px}
+  .mob-toggle{display:flex}
+  .hero h1{font-size:32px}
+  .hero-stats{gap:24px}
+  .agent-diagram{flex-direction:column}
+  .agent-arrow{transform:rotate(90deg)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-tag">Complete Course</div>
+    <h2>Google ADK<br>Mastery</h2>
+  </div>
+
+  <div class="nav-week">
+    <div class="nav-week-header"><span class="wdot" style="background:var(--w1)"></span>WEEK 1 — FOUNDATIONS</div>
+    <a class="nav-item" onclick="scrollTo('w1l1')">L1 · What is an AI Agent?</a>
+    <a class="nav-item" onclick="scrollTo('w1l2')">L2 · Setup & First Run</a>
+    <a class="nav-item" onclick="scrollTo('w1l3')">L3 · Your First Agent</a>
+    <a class="nav-item" onclick="scrollTo('w1l4')">L4 · Understanding LLMs</a>
+    <a class="nav-item" onclick="scrollTo('w1l5')">L5 · Instructions & Prompts</a>
+    <a class="nav-item" onclick="scrollTo('w1l6')">L6 · Hello World Projects</a>
+  </div>
+
+  <div class="nav-week">
+    <div class="nav-week-header"><span class="wdot" style="background:var(--w2)"></span>WEEK 2 — TOOLS & STATE</div>
+    <a class="nav-item" onclick="scrollTo('w2l1')">L7 · What are Tools?</a>
+    <a class="nav-item" onclick="scrollTo('w2l2')">L8 · Built-in Tools</a>
+    <a class="nav-item" onclick="scrollTo('w2l3')">L9 · Custom Tool Functions</a>
+    <a class="nav-item" onclick="scrollTo('w2l4')">L10 · Session & State</a>
+    <a class="nav-item" onclick="scrollTo('w2l5')">L11 · Memory & Context</a>
+    <a class="nav-item" onclick="scrollTo('w2l6')">L12 · Tool Projects</a>
+  </div>
+
+  <div class="nav-week">
+    <div class="nav-week-header"><span class="wdot" style="background:var(--w3)"></span>WEEK 3 — MULTI-AGENT</div>
+    <a class="nav-item" onclick="scrollTo('w3l1')">L13 · Agent Types Deep Dive</a>
+    <a class="nav-item" onclick="scrollTo('w3l2')">L14 · SequentialAgent</a>
+    <a class="nav-item" onclick="scrollTo('w3l3')">L15 · ParallelAgent</a>
+    <a class="nav-item" onclick="scrollTo('w3l4')">L16 · LoopAgent</a>
+    <a class="nav-item" onclick="scrollTo('w3l5')">L17 · Sub-agents & Routing</a>
+    <a class="nav-item" onclick="scrollTo('w3l6')">L18 · Multi-Agent Projects</a>
+  </div>
+
+  <div class="nav-week">
+    <div class="nav-week-header"><span class="wdot" style="background:var(--w4)"></span>WEEK 4 — PRODUCTION</div>
+    <a class="nav-item" onclick="scrollTo('w4l1')">L19 · MCP Tools</a>
+    <a class="nav-item" onclick="scrollTo('w4l2')">L20 · Evaluation & Testing</a>
+    <a class="nav-item" onclick="scrollTo('w4l3')">L21 · Debugging & ADK UI</a>
+    <a class="nav-item" onclick="scrollTo('w4l4')">L22 · Deploy to Cloud Run</a>
+    <a class="nav-item" onclick="scrollTo('w4l5')">L23 · Advanced Patterns</a>
+    <a class="nav-item" onclick="scrollTo('w4l6')">L24 · Capstone Project</a>
+  </div>
+
+  <div class="nav-progress">
+    <p>Course Progress</p>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+</nav>
+
+<!-- ═══════════════ MAIN ═══════════════ -->
+<main class="main">
+<div class="content">
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow">4 Weeks · 24 Lectures · Beginner to Advanced</div>
+  <h1>Google <em>ADK</em> Mastery<br>Complete Course</h1>
+  <p class="hero-sub">Learn to build AI agents from scratch — no prior experience needed. We explain every concept like you're 10, then level up to production-grade multi-agent systems.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><span class="num">24</span><span class="label">Lectures</span></div>
+    <div class="hero-stat"><span class="num">50+</span><span class="label">Code Examples</span></div>
+    <div class="hero-stat"><span class="num">4</span><span class="label">Projects</span></div>
+    <div class="hero-stat"><span class="num">30</span><span class="label">Days</span></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     WEEK 1 — FOUNDATIONS
+════════════════════════════════════════ -->
+<div class="week-banner w1-banner" id="week1">
+  <div class="week-banner-tag">Week 1 · Days 1–7</div>
+  <h2>🌱 Foundations — Understanding AI Agents</h2>
+  <p>We start from absolute zero. No assumptions. You'll understand what agents are, why they're revolutionary, and build your first working agent by Day 3.</p>
+  <div class="week-pills">
+    <span class="pill">What is ADK?</span><span class="pill">Setup</span>
+    <span class="pill">LlmAgent</span><span class="pill">Gemini API</span>
+    <span class="pill">Instructions</span><span class="pill">First Project</span>
+  </div>
+</div>
+
+<!-- L1 -->
+<div class="lecture" id="w1l1">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 1</span>
+    <div class="lecture-info">
+      <div class="lecture-title">What is an AI Agent? (And why should you care?)</div>
+      <div class="lecture-meta">
+        <span>📖 Beginner</span><span>⏱ 45 min</span><span>🎯 Pure concepts, no code</span>
+      </div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <div class="section-label">The Big Picture</div>
+    <div class="explain">
+      Before writing a single line of code, we need to understand <strong>what we're building</strong> and <strong>why it's different</strong> from regular software.
+    </div>
+
+    <h3>🤖 What is an AI Agent?</h3>
+    <p style="color:var(--muted2);font-size:14px;margin-bottom:14px">An AI agent is a program that can <strong style="color:var(--text)">think, plan, and take actions</strong> to achieve a goal — just like a human assistant would.</p>
+
+    <div class="analogy">
+      Imagine you hire a personal assistant. You say: <em>"Book me a flight to Delhi next Friday, under ₹8000, and email me the confirmation."</em> Your assistant doesn't just respond — they <strong>search flights</strong>, <strong>compare prices</strong>, <strong>make a decision</strong>, <strong>complete the booking</strong>, and <strong>send you an email</strong>. That's an AI agent.
+    </div>
+
+    <div class="concepts">
+      <div class="concept-card">
+        <span class="icon">🧠</span>
+        <h4>Brain (LLM)</h4>
+        <p>The AI model (Gemini) that understands language and reasons about what to do next.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🛠️</span>
+        <h4>Tools</h4>
+        <p>Functions the agent can call — like searching the web, reading files, or sending emails.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">📋</span>
+        <h4>Instructions</h4>
+        <p>The rules you give the agent about its personality, job, and how to behave.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">💾</span>
+        <h4>Memory</h4>
+        <p>How the agent remembers what happened earlier in the conversation or task.</p>
+      </div>
+    </div>
+
+    <h3>🆚 Agent vs Regular Program vs ChatGPT</h3>
+    <table class="comp-table">
+      <tr><th>Feature</th><th>Regular Program</th><th>ChatGPT</th><th>AI Agent (ADK)</th></tr>
+      <tr><td>Follows fixed steps</td><td>✅ Always</td><td>❌</td><td>❌ It decides steps itself</td></tr>
+      <tr><td>Can use external tools</td><td>✅ (hardcoded)</td><td>Limited</td><td>✅ Dynamically chosen</td></tr>
+      <tr><td>Multi-step tasks</td><td>Only if coded</td><td>No persistence</td><td>✅ Automatically</td></tr>
+      <tr><td>Can work with other agents</td><td>❌</td><td>❌</td><td>✅ Multi-agent systems</td></tr>
+      <tr><td>Adapts to new situations</td><td>❌</td><td>Somewhat</td><td>✅ Fully adaptive</td></tr>
+    </table>
+
+    <h3>🏗️ What is Google ADK?</h3>
+    <div class="explain">
+      <strong>ADK</strong> stands for <strong>Agent Development Kit</strong>. It's an open-source Python framework made by Google that gives you all the building blocks to create professional AI agents without starting from scratch.<br><br>
+      Think of it like <strong>LEGO</strong> — Google made the pieces, you assemble them into whatever you want.
+    </div>
+
+    <div class="explain blue">
+      ADK is the same framework that powers Google's own internal products like <strong>Agentspace</strong> and their Customer Engagement Suite. When you learn ADK, you're learning production-grade technology.
+    </div>
+
+    <h3>🌍 Real-World Use Cases</h3>
+    <ul class="checklist">
+      <li>Customer support agent that reads your database, answers questions, escalates issues</li>
+      <li>Research agent that searches the web, reads papers, and writes summaries</li>
+      <li>Coding agent that writes code, runs tests, fixes bugs automatically</li>
+      <li>Travel agent that books flights, hotels, and sends itineraries</li>
+      <li>Data agent that reads CSVs, generates charts, writes reports</li>
+      <li>Personal assistant that manages your calendar, emails, and tasks</li>
+    </ul>
+
+    <div class="summary">
+      <h4>📌 Lecture Summary</h4>
+      <ul class="checklist">
+        <li>An AI agent <strong>thinks + acts</strong>, not just responds</li>
+        <li>It has a <strong>brain (LLM)</strong>, <strong>tools</strong>, <strong>instructions</strong>, and <strong>memory</strong></li>
+        <li>ADK is Google's framework for building agents — production-ready</li>
+        <li>Agents can work alone or in <strong>teams</strong> (multi-agent systems)</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- L2 -->
+<div class="lecture" id="w1l2">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 2</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Environment Setup — Installing ADK & Getting Your API Key</div>
+      <div class="lecture-meta"><span>🔧 Setup</span><span>⏱ 30 min</span><span>✅ Hands-on</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>📋 What You Need</h3>
+    <div class="explain">You need: <strong>Python 3.9+</strong>, a <strong>Gemini API Key</strong> (free), and a terminal. That's it. No cloud account needed yet.</div>
+
+    <h3>Step 1 — Check Python</h3>
+    <div class="cmd"><span class="cmd-ps">$</span><code>python --version</code><span class="cmd-note">should show 3.9 or higher</span></div>
+    <div class="warn">If you see "command not found", download Python from python.org first.</div>
+
+    <h3>Step 2 — Create a Virtual Environment</h3>
+    <div class="explain">A virtual environment is like a clean room for your project — it keeps packages separate so nothing conflicts.</div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Terminal</span><span class="lang">bash</span></div>
+      <pre><span class="cm"># Create virtual environment</span>
+python -m venv adk-env
+
+<span class="cm"># Activate it (Mac/Linux)</span>
+source adk-env/bin/activate
+
+<span class="cm"># Activate it (Windows)</span>
+adk-env\Scripts\activate
+
+<span class="cm"># You'll see (adk-env) in your terminal now ✅</span></pre>
+    </div>
+
+    <h3>Step 3 — Install ADK</h3>
+    <div class="cmd"><span class="cmd-ps">$</span><code>pip install google-adk</code></div>
+    <div class="cmd"><span class="cmd-ps">$</span><code>pip install google-generativeai</code></div>
+
+    <h3>Step 4 — Get Free API Key</h3>
+    <div class="steps">
+      <div class="step"><div class="step-content"><h4>Go to Google AI Studio</h4><p>Visit <strong>aistudio.google.com</strong> and sign in with your Google account.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Create API Key</h4><p>Click "Get API Key" → "Create API key" → Copy it somewhere safe.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Set Environment Variable</h4><p>This is how ADK finds your key — we set it as an environment variable, not hardcoded in code (security best practice).</p></div></div>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Mac / Linux</span><span class="lang">bash</span></div>
+      <pre><span class="cm"># Add to your terminal session</span>
+export GOOGLE_API_KEY=<span class="str">"your-actual-key-here"</span>
+export GOOGLE_GENAI_USE_VERTEXAI=<span class="str">false</span>
+
+<span class="cm"># To make it permanent, add these lines to ~/.zshrc or ~/.bashrc</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Windows (Command Prompt)</span><span class="lang">cmd</span></div>
+      <pre>set GOOGLE_API_KEY=your-actual-key-here
+set GOOGLE_GENAI_USE_VERTEXAI=false</pre>
+    </div>
+
+    <h3>Step 5 — Verify Installation</h3>
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk --version</code></div>
+    <div class="output">google-adk 1.x.x</div>
+    <div class="tip-box">🎉 If you see a version number, you're ready! If not, make sure your virtual environment is activated.</div>
+
+    <div class="summary">
+      <h4>📌 Quick Reference</h4>
+      <ul class="checklist">
+        <li>Always <strong>activate your virtual environment</strong> before working</li>
+        <li>API key goes in <strong>environment variable</strong>, never in your code file</li>
+        <li><code>GOOGLE_GENAI_USE_VERTEXAI=false</code> means use free API, not paid Google Cloud</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- L3 -->
+<div class="lecture" id="w1l3">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 3</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Your First Agent — Hello World in ADK</div>
+      <div class="lecture-meta"><span>💻 Coding</span><span>⏱ 60 min</span><span>🚀 Build something real</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>📁 Project Structure</h3>
+    <div class="explain">ADK requires a specific folder structure. Your agent must be a <strong>Python package</strong> (folder with __init__.py) and the agent variable must be named <strong>root_agent</strong>.</div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Folder Structure</span><span class="lang">tree</span></div>
+      <pre>my_first_agent/          <span class="cm">← your project folder</span>
+├── my_first_agent/      <span class="cm">← Python package (same name)</span>
+│   ├── __init__.py      <span class="cm">← makes it a package</span>
+│   └── agent.py         <span class="cm">← your agent lives here</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Terminal — Create the structure</span><span class="lang">bash</span></div>
+      <pre>mkdir my_first_agent
+cd my_first_agent
+mkdir my_first_agent
+touch my_first_agent/__init__.py
+touch my_first_agent/agent.py</pre>
+    </div>
+
+    <h3>🤖 agent.py — The Simplest Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">my_first_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="cm"># Step 1: Import LlmAgent from ADK</span>
+<span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="cm"># Step 2: Create your agent</span>
+<span class="cm"># THIS variable MUST be called root_agent — ADK looks for this exact name</span>
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"my_assistant"</span>,          <span class="cm"># internal name (no spaces)</span>
+    model=<span class="str">"gemini-2.0-flash"</span>,      <span class="cm"># which AI model to use</span>
+    description=<span class="str">"A friendly assistant that helps with anything."</span>,
+    instruction=<span class="str">"""You are a friendly and helpful assistant named Buddy.
+You speak in a warm, encouraging tone.
+Keep answers short and clear.
+Always end with an encouraging emoji."""</span>,
+)</pre>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">my_first_agent/__init__.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">.</span> <span class="kw">import</span> agent  <span class="cm"># imports the agent module</span></pre>
+    </div>
+
+    <h3>🚀 Run It — 3 Ways</h3>
+
+    <div class="section-label">Way 1 — Browser UI (Best for learning)</div>
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk web</code><span class="cmd-note">open localhost:8000</span></div>
+    <div class="explain">The browser UI shows you: the conversation, what tools were called, how long each step took, and the full session state. <strong>Use this for development.</strong></div>
+
+    <div class="section-label">Way 2 — Terminal Chat</div>
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk run my_first_agent</code></div>
+    <div class="output">Running agent: my_assistant
+Type your message (or 'exit' to quit):
+&gt; Hello!
+Buddy: Hi there! 🌟 I'm Buddy, your friendly assistant! How can I help you today? 😊</div>
+
+    <div class="section-label">Way 3 — Python Code</div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">run_agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">asyncio</span>
+<span class="kw">from</span> <span class="dec">google.adk.runners</span> <span class="kw">import</span> <span class="cls">Runner</span>
+<span class="kw">from</span> <span class="dec">google.adk.sessions</span> <span class="kw">import</span> <span class="cls">InMemorySessionService</span>
+<span class="kw">from</span> <span class="dec">google.genai.types</span> <span class="kw">import</span> <span class="cls">Content</span>, <span class="cls">Part</span>
+<span class="kw">from</span> <span class="dec">my_first_agent.agent</span> <span class="kw">import</span> <span class="var">root_agent</span>
+
+<span class="kw">async def</span> <span class="fn">chat</span>(message: str):
+    <span class="cm"># 1. Create a session service (stores conversation history)</span>
+    session_service = <span class="cls">InMemorySessionService</span>()
+    session = <span class="kw">await</span> session_service.create_session(
+        app_name=<span class="str">"my_app"</span>, user_id=<span class="str">"user1"</span>
+    )
+
+    <span class="cm"># 2. Create a runner (manages the agent execution)</span>
+    runner = <span class="cls">Runner</span>(
+        agent=<span class="var">root_agent</span>,
+        app_name=<span class="str">"my_app"</span>,
+        session_service=session_service,
+    )
+
+    <span class="cm"># 3. Send a message</span>
+    msg = <span class="cls">Content</span>(parts=[<span class="cls">Part</span>(text=message)])
+
+    <span class="cm"># 4. Get the response (async generator)</span>
+    <span class="kw">async for</span> event <span class="kw">in</span> runner.run_async(
+        user_id=<span class="str">"user1"</span>,
+        session_id=session.id,
+        new_message=msg,
+    ):
+        <span class="kw">if</span> event.is_final_response():
+            print(<span class="str">"Agent:"</span>, event.content.parts[<span class="num">0</span>].text)
+
+<span class="cm"># Run it!</span>
+asyncio.run(chat(<span class="str">"Hello! What can you do?"</span>))</pre>
+    </div>
+    <div class="cmd"><span class="cmd-ps">$</span><code>python run_agent.py</code></div>
+    <div class="output">Agent: Hello! 🌟 I'm Buddy, your friendly assistant! I can help you with questions, writing, analysis, brainstorming, and much more. What would you like help with today? 😊</div>
+
+    <div class="analogy">
+      The <strong>Runner</strong> is like a restaurant manager — it takes your order (message), sends it to the chef (agent/LLM), and brings back the food (response). The <strong>Session</strong> is the table — it keeps track of your entire dining experience.
+    </div>
+
+    <h3>🔍 Understanding Each Parameter</h3>
+    <table class="comp-table">
+      <tr><th>Parameter</th><th>What it does</th><th>Required?</th></tr>
+      <tr><td>name</td><td>Internal ID for this agent. No spaces allowed. Used in logs and multi-agent routing.</td><td>✅ Yes</td></tr>
+      <tr><td>model</td><td>Which AI model powers this agent. "gemini-2.0-flash" is fast and free.</td><td>✅ Yes</td></tr>
+      <tr><td>description</td><td>Tells other agents what this agent does (important in multi-agent systems)</td><td>Recommended</td></tr>
+      <tr><td>instruction</td><td>The system prompt — shapes the agent's personality and behavior</td><td>Recommended</td></tr>
+      <tr><td>tools</td><td>List of functions the agent can call (covered in Week 2)</td><td>❌ Optional</td></tr>
+      <tr><td>sub_agents</td><td>Child agents this one can delegate to (Week 3)</td><td>❌ Optional</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- L4 -->
+<div class="lecture" id="w1l4">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 4</span>
+    <div class="lecture-info">
+      <div class="lecture-title">How LLMs Work — The Brain of Your Agent</div>
+      <div class="lecture-meta"><span>📖 Concepts</span><span>⏱ 40 min</span><span>🧠 Theory</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🧠 What is a Large Language Model?</h3>
+    <div class="analogy">
+      Imagine reading <strong>all the books, websites, articles, and code ever written</strong> — billions of pages. Then someone asks you a question, and you use all that knowledge to answer. That's essentially what an LLM does. It was trained on most of the internet's text.
+    </div>
+
+    <div class="explain">
+      An LLM (Large Language Model) is a neural network trained to <strong>predict the next word</strong> given what came before. When you ask "What is the capital of France?", it doesn't look up a database — it generates a response based on patterns learned during training.
+    </div>
+
+    <h3>🔄 The Request/Response Cycle</h3>
+    <div class="explain">
+      Every time your agent processes a message, this happens:<br><br>
+      <strong>1. Your code</strong> sends: [System Instructions + Conversation History + New Message]<br>
+      <strong>2. The LLM</strong> processes all that text together<br>
+      <strong>3. It decides:</strong> Should I respond? Or call a tool?<br>
+      <strong>4. If tool:</strong> ADK runs the tool, sends result back to LLM<br>
+      <strong>5. LLM generates</strong> a final text response<br>
+      <strong>6. ADK returns</strong> that to your code
+    </div>
+
+    <h3>🤔 How Does the Agent "Decide" to Use a Tool?</h3>
+    <div class="analogy amber">
+      When you gave the agent tools, ADK told the LLM: <em>"You have these tools available: [list of tools with their descriptions]. If you need to use one, output a special JSON message instead of a text response."</em><br><br>
+      The LLM was trained to recognize when a tool would be helpful and output that special format. ADK intercepts it, runs the tool, and feeds the result back.
+    </div>
+
+    <h3>⚙️ Available Models</h3>
+    <table class="comp-table">
+      <tr><th>Model</th><th>Speed</th><th>Cost</th><th>Best For</th></tr>
+      <tr><td>gemini-2.0-flash</td><td>Very Fast</td><td>Free tier</td><td>Most tasks, learning, prototyping</td></tr>
+      <tr><td>gemini-2.0-pro</td><td>Medium</td><td>Paid</td><td>Complex reasoning, nuanced tasks</td></tr>
+      <tr><td>gemini-1.5-flash</td><td>Fast</td><td>Low cost</td><td>High-volume applications</td></tr>
+    </table>
+    <div class="tip-box">For this course, use <strong>gemini-2.0-flash</strong> — it's fast, capable, and free for learning.</div>
+
+    <h3>📏 Context Window — The Agent's Working Memory</h3>
+    <div class="explain">
+      The context window is how much text the LLM can "see" at once. Everything — instructions, conversation history, tool results — must fit inside it.<br><br>
+      Gemini 2.0 Flash has a <strong>1,000,000 token</strong> context window (~750,000 words). That's enormous — enough for most use cases. ADK manages this automatically.
+    </div>
+
+  </div>
+</div>
+
+<!-- L5 -->
+<div class="lecture" id="w1l5">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 5</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Writing Great Instructions — The Art of Prompt Engineering</div>
+      <div class="lecture-meta"><span>✍️ Writing</span><span>⏱ 50 min</span><span>🎨 Creative + Technical</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>📜 What are Instructions?</h3>
+    <div class="explain">
+      The <strong>instruction</strong> parameter is the most powerful tool you have. It's the system prompt — sent to the LLM before every conversation. It defines who the agent is, what it can do, and how it should behave.
+    </div>
+    <div class="analogy">
+      Instructions are like a <strong>job description + employee handbook</strong> for your agent. A vague job description gives mediocre results. A detailed one with examples gives excellent results.
+    </div>
+
+    <h3>❌ Bad vs ✅ Good Instructions</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Bad instruction (too vague)</span><span class="lang">python</span></div>
+      <pre>instruction=<span class="str">"Help users with their questions."</span></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Good instruction (specific, structured)</span><span class="lang">python</span></div>
+      <pre>instruction=<span class="str">"""You are CodeHelper, an expert Python programming assistant.
+
+YOUR ROLE:
+- Help users write, debug, and understand Python code
+- Explain concepts clearly with simple analogies
+- Always provide working, tested code examples
+
+YOUR STYLE:
+- Friendly but professional tone
+- Break complex problems into small steps
+- Use comments in code to explain what each line does
+
+RULES:
+- If you don't know something, say so honestly — don't guess
+- Always ask clarifying questions if the problem is unclear
+- Never write code that could be harmful or malicious
+
+RESPONSE FORMAT:
+1. Brief explanation of the approach
+2. The code block
+3. What the code does (line by line if complex)
+4. Suggestions for improvement"""</span></pre>
+    </div>
+
+    <h3>🏗️ Instruction Template</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Universal Template</span><span class="lang">python</span></div>
+      <pre>instruction=<span class="str">"""You are [NAME], a [ROLE DESCRIPTION].
+
+YOUR EXPERTISE:
+- [Capability 1]
+- [Capability 2]
+
+YOUR PERSONALITY:
+- [Trait 1]
+- [Trait 2]
+
+IMPORTANT RULES:
+- [Rule 1]
+- [Rule 2]
+
+RESPONSE FORMAT:
+[How you want responses structured]
+
+EXAMPLES:
+User: [example input]
+You: [example ideal output]"""</span></pre>
+    </div>
+
+    <h3>💡 6 Instruction Best Practices</h3>
+    <div class="steps">
+      <div class="step"><div class="step-content"><h4>Be Specific About Role</h4><p>Don't say "helpful assistant" — say "Senior Python Developer with 10 years experience, specializing in data pipelines".</p></div></div>
+      <div class="step"><div class="step-content"><h4>Define Output Format</h4><p>Tell the agent exactly how you want responses: "Always respond in JSON", "Use markdown headers", "Keep under 200 words".</p></div></div>
+      <div class="step"><div class="step-content"><h4>Give Examples (Few-shot)</h4><p>Show 1-2 examples of ideal input/output pairs. This is the single biggest boost to quality.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Set Boundaries</h4><p>Explicitly say what the agent should NOT do: "Do not discuss competitor products", "Never make up statistics".</p></div></div>
+      <div class="step"><div class="step-content"><h4>Use Triple Quotes</h4><p>Python triple-quoted strings (""") let you write multi-line instructions cleanly without escape characters.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Iterate and Test</h4><p>Write instructions, test with edge cases, fix gaps. Good instructions are written through testing, not guessing.</p></div></div>
+    </div>
+
+    <h3>🧪 Exercise — Build a Persona Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">agent.py — Chef Persona Agent</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"chef_agent"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A professional chef who helps with recipes and cooking."</span>,
+    instruction=<span class="str">"""You are Chef Marco, a professional Italian chef with 20 years
+of experience. You run a famous restaurant in Rome.
+
+YOUR STYLE:
+- Warm, passionate about food
+- Use occasional Italian words (with translations)
+- Share personal anecdotes about dishes
+
+WHEN GIVING RECIPES:
+1. List ingredients with exact measurements
+2. Step-by-step instructions (numbered)
+3. Chef's tip at the end
+4. Serving suggestions
+
+RULES:
+- If an ingredient isn't available, suggest the best substitute
+- Always consider dietary restrictions if mentioned
+- Never recommend raw meat or food safety violations"""</span>,
+)</pre>
+    </div>
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk run .</code></div>
+    <div class="output">Chef Marco: Ciao, amico! 🍝 Welcome to my kitchen!
+What can I help you create today?
+
+&gt; How do I make pasta carbonara?
+
+Chef Marco: Ah, la carbonara! This is my favorite dish — 
+simple but requires precision...
+
+INGREDIENTS (serves 2):
+- 200g spaghetti
+- 150g guanciale (or pancetta)
+- 3 egg yolks + 1 whole egg
+- 60g Pecorino Romano, grated
+- Black pepper (freshly ground)
+- Salt (for pasta water only)
+
+STEPS:
+1. Boil pasta in heavily salted water...
+[continues with full recipe]
+
+Chef's Tip: The secret is in the temperature! 🔥</div>
+
+  </div>
+</div>
+
+<!-- L6 -->
+<div class="lecture" id="w1l6">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(74,222,128,0.1);color:var(--w1)">DAY 6-7</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Week 1 Projects — 3 Simple Agents to Build</div>
+      <div class="lecture-meta"><span>🛠️ Project</span><span>⏱ 3 hours</span><span>🎯 Build 3 agents</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>Project 1 — Quiz Master Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">quiz_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"quiz_master"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"An engaging quiz host who creates and runs quizzes."</span>,
+    instruction=<span class="str">"""You are QuizBot, an enthusiastic quiz master!
+
+When the user says "start quiz [topic]":
+1. Generate 5 multiple-choice questions about that topic
+2. Show ONE question at a time with options A, B, C, D
+3. Wait for their answer
+4. Tell them if correct and explain why
+5. Track score: X/5
+6. At end: give score and performance message
+
+FORMAT:
+Question 2/5: [question]
+A) option
+B) option  
+C) option
+D) option
+
+Always be encouraging, even when wrong!"""</span>,
+)</pre>
+    </div>
+
+    <h3>Project 2 — Language Tutor Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">tutor_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"language_tutor"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A patient language tutor for any language."</span>,
+    instruction=<span class="str">"""You are LinguaBot, a patient and encouraging language tutor.
+
+CAPABILITIES:
+- Teach vocabulary, grammar, phrases for any language
+- Correct mistakes gently with explanation
+- Create practice exercises on request
+- Translate and explain nuances
+
+TEACHING STYLE:
+- Always provide pronunciation guide in brackets [pro-NUN-see-AY-shun]
+- Give example sentences for every new word
+- Use spaced repetition: review words from earlier
+
+COMMANDS the user can use:
+- "Teach me [topic] in [language]"
+- "Quiz me on vocabulary"
+- "Correct my sentence: [sentence]"
+- "How do you say [phrase] in [language]?"
+
+Never overwhelm — introduce max 5 new words per session."""</span>,
+)</pre>
+    </div>
+
+    <h3>Project 3 — Personal Finance Tracker Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">finance_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"finance_advisor"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A personal finance helper that tracks spending and gives advice."</span>,
+    instruction=<span class="str">"""You are FinBot, a friendly personal finance assistant.
+
+TRACKING:
+When user logs an expense like "spent ₹500 on groceries":
+- Acknowledge and categorize it
+- Keep a running total in the conversation
+- Alert if category seems high
+
+CATEGORIES: Food, Transport, Shopping, Bills, Health, Entertainment, Other
+
+ADVICE:
+- Give practical, India-specific savings tips
+- Suggest 50-30-20 budgeting rule when relevant
+- Never give specific investment advice (say "consult a SEBI-registered advisor")
+
+MONTHLY SUMMARY:
+When asked "show summary": Display spending by category as a simple table.
+
+Be non-judgmental — no shaming about spending choices!"""</span>,
+)</pre>
+    </div>
+
+    <div class="summary">
+      <h4>📌 Week 1 Complete! You learned:</h4>
+      <ul class="checklist">
+        <li>What AI agents are and how they differ from chatbots</li>
+        <li>How to install ADK and get a free Gemini API key</li>
+        <li>How to create an LlmAgent with name, model, instructions</li>
+        <li>How to run agents: browser UI, CLI, and programmatically</li>
+        <li>How to write powerful instructions that shape agent behavior</li>
+        <li>Built 3 complete working agents!</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     WEEK 2 — TOOLS & STATE
+════════════════════════════════════════ -->
+<div class="week-banner w2-banner" id="week2">
+  <div class="week-banner-tag">Week 2 · Days 8–14</div>
+  <h2>🔧 Tools & State — Making Agents Actually Useful</h2>
+  <p>An agent without tools is just a chatbot. This week you'll give your agents superpowers — the ability to search the web, call APIs, read files, do math, and remember things.</p>
+  <div class="week-pills">
+    <span class="pill">Custom Tools</span><span class="pill">Google Search</span>
+    <span class="pill">Session State</span><span class="pill">output_key</span>
+    <span class="pill">API Calls</span><span class="pill">File Reading</span>
+  </div>
+</div>
+
+<!-- L7 -->
+<div class="lecture" id="w2l1">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 8</span>
+    <div class="lecture-info">
+      <div class="lecture-title">What are Tools? — Giving Your Agent Superpowers</div>
+      <div class="lecture-meta"><span>🔧 Concepts</span><span>⏱ 45 min</span><span>🧠 Core concept</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🦾 Why Tools Matter</h3>
+    <div class="analogy">
+      An LLM's knowledge is frozen at its training cutoff. It can't look up today's weather, can't read your files, can't send emails. <strong>Tools are the hands</strong> that let your agent reach out into the real world.
+    </div>
+
+    <div class="explain">
+      A tool is simply a <strong>Python function</strong> that you give to your agent. The agent decides when to call it, passes the right arguments, and uses the result in its response.
+    </div>
+
+    <h3>🔑 The 3 Rules for Tools</h3>
+    <div class="steps">
+      <div class="step"><div class="step-content"><h4>Type Hints are MANDATORY</h4><p>Every parameter must have a type hint (str, int, float, bool, list, dict). ADK uses these to tell the LLM what arguments to pass.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Docstring IS the description</h4><p>Write a clear docstring — the LLM reads it to decide WHEN to call this tool. A bad docstring = tool never gets used correctly.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Return something useful</h4><p>Return a dict, string, or simple value. The LLM will see this return value and use it to formulate its response.</p></div></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Anatomy of a Perfect Tool</span><span class="lang">python</span></div>
+      <pre><span class="kw">def</span> <span class="fn">calculate_bmi</span>(weight_kg: float, height_m: float) -> dict:
+    <span class="str">"""
+    Calculate Body Mass Index (BMI) for a person.
+    Use this when someone asks about their BMI or healthy weight.
+    
+    Args:
+        weight_kg: Person's weight in kilograms
+        height_m: Person's height in meters (e.g., 1.75 for 175cm)
+    
+    Returns:
+        Dictionary with bmi value and category
+    """</span>
+    <span class="cm"># Calculate BMI: weight / height²</span>
+    bmi = weight_kg / (height_m ** <span class="num">2</span>)
+    
+    <span class="cm"># Determine category</span>
+    <span class="kw">if</span> bmi < <span class="num">18.5</span>:
+        category = <span class="str">"Underweight"</span>
+    <span class="kw">elif</span> bmi < <span class="num">25</span>:
+        category = <span class="str">"Normal weight"</span>
+    <span class="kw">elif</span> bmi < <span class="num">30</span>:
+        category = <span class="str">"Overweight"</span>
+    <span class="kw">else</span>:
+        category = <span class="str">"Obese"</span>
+    
+    <span class="kw">return</span> {
+        <span class="str">"bmi"</span>: <span class="fn">round</span>(bmi, <span class="num">2</span>),
+        <span class="str">"category"</span>: category,
+        <span class="str">"healthy_range"</span>: <span class="str">"18.5 to 24.9"</span>
+    }</pre>
+    </div>
+
+    <div class="tip-box">The LLM never runs your tool — ADK does. The LLM just outputs: "Call calculate_bmi with weight_kg=70, height_m=1.75". ADK intercepts this, runs the function, and sends the result back to the LLM.</div>
+
+  </div>
+</div>
+
+<!-- L8 -->
+<div class="lecture" id="w2l2">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 9</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Built-in Tools — Google Search, Code Execution & More</div>
+      <div class="lecture-meta"><span>🔍 Tools</span><span>⏱ 50 min</span><span>⚡ Quick wins</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🔍 Google Search Tool</h3>
+    <div class="explain">ADK comes with a built-in Google Search tool. One import, and your agent can search the real-time web.</div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">search_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>  <span class="cm"># ← built-in!</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"research_bot"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A research assistant that searches the web for answers."</span>,
+    instruction=<span class="str">"""You are a research assistant. When users ask questions:
+1. Search the web for current, accurate information
+2. Summarize findings in plain language
+3. Always cite your sources (mention where info came from)
+4. If multiple sources disagree, mention it"""</span>,
+    tools=[<span class="var">google_search</span>],  <span class="cm"># ← just add it here!</span>
+)</pre>
+    </div>
+
+    <div class="output">User: What's the latest news about AI regulations in India?
+
+Agent: [searches web...]
+
+Based on recent news, India's Ministry of Electronics and IT (MeitY) 
+has released an advisory on AI... [summarizes 3-4 recent articles]
+Sources: Economic Times, The Hindu, TechCrunch India</div>
+
+    <h3>⚡ Code Execution Tool</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">code_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.code_executors</span> <span class="kw">import</span> <span class="cls">BuiltInCodeExecutor</span>
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"data_analyst"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A data analyst that can write and execute Python code."</span>,
+    instruction=<span class="str">"""You are a data analyst. You can:
+- Write Python code to analyze data
+- Create calculations and statistics
+- Solve math problems by running code
+- Generate data visualizations (describe the chart)
+
+Always run code to verify answers before presenting them."""</span>,
+    code_executor=<span class="cls">BuiltInCodeExecutor</span>(),
+)</pre>
+    </div>
+
+    <h3>🌐 Combining Multiple Built-in Tools</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">super_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+
+<span class="cm"># Custom tool alongside built-in</span>
+<span class="kw">def</span> <span class="fn">get_current_time</span>(timezone: str = <span class="str">"Asia/Kolkata"</span>) -> dict:
+    <span class="str">"""Get the current date and time for a timezone.
+    Use when user asks about current time or date.
+    Args: timezone: IANA timezone string like 'Asia/Kolkata' or 'US/Eastern'
+    """</span>
+    <span class="kw">from</span> <span class="dec">datetime</span> <span class="kw">import</span> datetime
+    <span class="kw">import</span> <span class="dec">pytz</span>
+    tz = pytz.timezone(timezone)
+    now = datetime.now(tz)
+    <span class="kw">return</span> {
+        <span class="str">"datetime"</span>: now.strftime(<span class="str">"%Y-%m-%d %H:%M:%S"</span>),
+        <span class="str">"timezone"</span>: timezone,
+        <span class="str">"day_of_week"</span>: now.strftime(<span class="str">"%A"</span>),
+    }
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"super_assistant"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"A helpful assistant with web search and time awareness."</span>,
+    tools=[<span class="var">google_search</span>, <span class="fn">get_current_time</span>],  <span class="cm"># mix and match!</span>
+)</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- L9 -->
+<div class="lecture" id="w2l3">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 10</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Custom Tool Functions — Calling APIs & External Services</div>
+      <div class="lecture-meta"><span>💻 Advanced Tools</span><span>⏱ 60 min</span><span>🌐 Real APIs</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🌤️ Example: Weather Tool (OpenWeatherMap API)</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">weather_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">requests</span>
+<span class="kw">import</span> <span class="dec">os</span>
+<span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="cm"># ── Tool Function ────────────────────────────────</span>
+<span class="kw">def</span> <span class="fn">get_weather</span>(city: str, country_code: str = <span class="str">"IN"</span>) -> dict:
+    <span class="str">"""
+    Get current weather for a city.
+    Use when user asks about weather or temperature in any location.
+    
+    Args:
+        city: City name (e.g., "Mumbai", "Delhi", "Bangalore")
+        country_code: 2-letter country code, default is India (IN)
+    
+    Returns:
+        Weather data including temperature, humidity, and conditions
+    """</span>
+    api_key = os.getenv(<span class="str">"OPENWEATHER_API_KEY"</span>, <span class="str">"demo"</span>)
+    url = <span class="fn">f</span><span class="str">"https://api.openweathermap.org/data/2.5/weather"</span>
+    
+    <span class="kw">try</span>:
+        response = requests.get(url, params={
+            <span class="str">"q"</span>: <span class="fn">f</span><span class="str">"{city},{country_code}"</span>,
+            <span class="str">"appid"</span>: api_key,
+            <span class="str">"units"</span>: <span class="str">"metric"</span>  <span class="cm"># Celsius</span>
+        }, timeout=<span class="num">10</span>)
+        
+        <span class="kw">if</span> response.status_code == <span class="num">200</span>:
+            data = response.json()
+            <span class="kw">return</span> {
+                <span class="str">"city"</span>: data[<span class="str">"name"</span>],
+                <span class="str">"temperature_c"</span>: data[<span class="str">"main"</span>][<span class="str">"temp"</span>],
+                <span class="str">"feels_like_c"</span>: data[<span class="str">"main"</span>][<span class="str">"feels_like"</span>],
+                <span class="str">"humidity_percent"</span>: data[<span class="str">"main"</span>][<span class="str">"humidity"</span>],
+                <span class="str">"condition"</span>: data[<span class="str">"weather"</span>][<span class="num">0</span>][<span class="str">"description"</span>],
+                <span class="str">"wind_kph"</span>: <span class="fn">round</span>(data[<span class="str">"wind"</span>][<span class="str">"speed"</span>] * <span class="num">3.6</span>, <span class="num">1</span>),
+            }
+        <span class="kw">else</span>:
+            <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"City not found: {city}"</span>}
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">str</span>(e)}
+
+<span class="cm"># ── Currency Converter Tool ───────────────────────</span>
+<span class="kw">def</span> <span class="fn">convert_currency</span>(amount: float, from_currency: str, to_currency: str) -> dict:
+    <span class="str">"""
+    Convert money between currencies.
+    Use when user asks to convert money or check exchange rates.
+    
+    Args:
+        amount: The amount to convert
+        from_currency: Source currency code (USD, INR, EUR, GBP, etc.)
+        to_currency: Target currency code
+    
+    Returns:
+        Converted amount and exchange rate
+    """</span>
+    <span class="cm"># Using exchangerate-api (free tier available)</span>
+    url = <span class="fn">f</span><span class="str">"https://open.er-api.com/v6/latest/{from_currency}"</span>
+    <span class="kw">try</span>:
+        response = requests.get(url, timeout=<span class="num">10</span>)
+        data = response.json()
+        
+        <span class="kw">if</span> to_currency <span class="kw">in</span> data[<span class="str">"rates"</span>]:
+            rate = data[<span class="str">"rates"</span>][to_currency]
+            converted = amount * rate
+            <span class="kw">return</span> {
+                <span class="str">"original"</span>: <span class="fn">f</span><span class="str">"{amount} {from_currency}"</span>,
+                <span class="str">"converted"</span>: <span class="fn">f</span><span class="str">"{converted:.2f} {to_currency}"</span>,
+                <span class="str">"rate"</span>: rate,
+            }
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"Unknown currency: {to_currency}"</span>}
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">str</span>(e)}
+
+<span class="cm"># ── Agent ─────────────────────────────────────────</span>
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"travel_info_agent"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Provides weather and currency info for travelers."</span>,
+    instruction=<span class="str">"""You are a travel information assistant.
+You can check current weather and convert currencies.
+Always provide helpful context — e.g., if it's hot, suggest light clothing.
+For currency, mention if the rate is approximate."""</span>,
+    tools=[<span class="fn">get_weather</span>, <span class="fn">convert_currency</span>],
+)</pre>
+    </div>
+
+    <h3>📁 File Reading Tool</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">File tool example</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">json</span>, <span class="dec">csv</span>, <span class="dec">os</span>
+
+<span class="kw">def</span> <span class="fn">read_file</span>(filepath: str, max_lines: int = <span class="num">100</span>) -> dict:
+    <span class="str">"""
+    Read content from a text, JSON, or CSV file.
+    Use when user asks to analyze, summarize, or work with a file.
+    
+    Args:
+        filepath: Full path to the file
+        max_lines: Maximum lines to read (default 100)
+    
+    Returns:
+        File content and metadata
+    """</span>
+    <span class="kw">if not</span> os.path.exists(filepath):
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"File not found: {filepath}"</span>}
+    
+    ext = os.path.splitext(filepath)[<span class="num">1</span>].lower()
+    
+    <span class="kw">if</span> ext == <span class="str">".json"</span>:
+        <span class="kw">with</span> <span class="fn">open</span>(filepath) <span class="kw">as</span> f:
+            <span class="kw">return</span> {<span class="str">"content"</span>: json.load(f), <span class="str">"type"</span>: <span class="str">"json"</span>}
+    
+    <span class="kw">elif</span> ext == <span class="str">".csv"</span>:
+        rows = []
+        <span class="kw">with</span> <span class="fn">open</span>(filepath) <span class="kw">as</span> f:
+            reader = csv.DictReader(f)
+            <span class="kw">for</span> i, row <span class="kw">in</span> <span class="fn">enumerate</span>(reader):
+                <span class="kw">if</span> i >= max_lines: <span class="kw">break</span>
+                rows.append(row)
+        <span class="kw">return</span> {<span class="str">"rows"</span>: rows, <span class="str">"count"</span>: <span class="fn">len</span>(rows), <span class="str">"type"</span>: <span class="str">"csv"</span>}
+    
+    <span class="kw">else</span>:  <span class="cm"># text file</span>
+        <span class="kw">with</span> <span class="fn">open</span>(filepath) <span class="kw">as</span> f:
+            lines = f.readlines()[:max_lines]
+        <span class="kw">return</span> {<span class="str">"content"</span>: <span class="str">""</span>.join(lines), <span class="str">"lines"</span>: <span class="fn">len</span>(lines), <span class="str">"type"</span>: <span class="str">"text"</span>}</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- L10 -->
+<div class="lecture" id="w2l4">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 11</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Session State & output_key — Passing Data Between Runs</div>
+      <div class="lecture-meta"><span>💾 State</span><span>⏱ 50 min</span><span>🔗 Critical for pipelines</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🧠 What is Session State?</h3>
+    <div class="analogy">
+      Imagine you're filling a form with multiple pages. Each page can read what you filled on previous pages. Session state is that form — a shared dictionary that any agent in the pipeline can read from or write to.
+    </div>
+
+    <h3>📤 output_key — Writing to State</h3>
+    <div class="explain">When you give an agent an <strong>output_key</strong>, it saves its response to session state under that key. Other agents can then read it using <strong>{key_name}</strong> in their instructions.</div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">State flow example</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>, <span class="cls">SequentialAgent</span>
+
+<span class="cm"># Agent 1: Writes "summary" to state</span>
+<span class="var">summarizer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"summarizer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"Summarize the user's input in 3 bullet points."</span>,
+    output_key=<span class="str">"summary"</span>,   <span class="cm"># ← writes output to state["summary"]</span>
+)
+
+<span class="cm"># Agent 2: Reads "summary" from state using {summary}</span>
+<span class="var">translator</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"translator"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Translate this summary to Hindi:
+
+{summary}
+
+Keep the bullet points format. Add English in brackets."""</span>,
+    output_key=<span class="str">"hindi_summary"</span>,  <span class="cm"># ← writes to another key</span>
+)
+
+<span class="cm"># Agent 3: Uses both state values</span>
+<span class="var">formatter</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"formatter"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Create a bilingual report using:
+
+ENGLISH SUMMARY:
+{summary}
+
+HINDI SUMMARY:
+{hindi_summary}
+
+Format as a clean document with both languages side by side."""</span>,
+)
+
+<span class="var">root_agent</span> = <span class="cls">SequentialAgent</span>(
+    name=<span class="str">"bilingual_pipeline"</span>,
+    sub_agents=[<span class="var">summarizer</span>, <span class="var">translator</span>, <span class="var">formatter</span>],
+)</pre>
+    </div>
+
+    <h3>📋 State Reference Card</h3>
+    <table class="comp-table">
+      <tr><th>Syntax</th><th>Where</th><th>What it does</th></tr>
+      <tr><td>output_key="my_key"</td><td>LlmAgent param</td><td>Saves agent's final response to state["my_key"]</td></tr>
+      <tr><td>{my_key}</td><td>Inside instruction string</td><td>Reads state["my_key"] into the instruction at runtime</td></tr>
+      <tr><td>input_schema</td><td>LlmAgent param</td><td>Defines expected input structure (advanced)</td></tr>
+    </table>
+
+    <div class="warn">State values are only available AFTER the agent that sets them has run. In a SequentialAgent, agent 3 can read what agents 1 and 2 wrote. But agent 1 cannot read what agent 2 writes.</div>
+
+  </div>
+</div>
+
+<!-- L11 L12 abbreviated -->
+<div class="lecture" id="w2l5">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 12</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Memory & Context Management in ADK</div>
+      <div class="lecture-meta"><span>🧠 Memory</span><span>⏱ 45 min</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+    <h3>Types of Memory in ADK</h3>
+    <table class="comp-table">
+      <tr><th>Type</th><th>Scope</th><th>How</th></tr>
+      <tr><td>In-context memory</td><td>Single conversation</td><td>ADK automatically includes conversation history in each LLM call</td></tr>
+      <tr><td>Session state</td><td>Single session</td><td>output_key / {key} pattern — shared between agents</td></tr>
+      <tr><td>InMemorySessionService</td><td>App lifetime</td><td>Stores sessions in RAM — lost when app restarts</td></tr>
+      <tr><td>DatabaseSessionService</td><td>Persistent</td><td>Stores to database — survives restarts (production)</td></tr>
+    </table>
+
+    <h3>💾 Persistent Sessions (Production)</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Persistent session example</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.sessions</span> <span class="kw">import</span> <span class="cls">DatabaseSessionService</span>
+
+<span class="cm"># Stores sessions in SQLite (or PostgreSQL for production)</span>
+session_service = <span class="cls">DatabaseSessionService</span>(
+    db_url=<span class="str">"sqlite:///agent_sessions.db"</span>
+)
+
+<span class="cm"># Now sessions survive restarts!
+# Users can return days later and continue conversations.</span></pre>
+    </div>
+
+    <h3>🧠 Making Agent Remember User Preferences</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Memory via instructions pattern</span><span class="lang">python</span></div>
+      <pre><span class="kw">def</span> <span class="fn">save_preference</span>(key: str, value: str) -> dict:
+    <span class="str">"""Save a user preference to remember for later.
+    Use when user tells you something about themselves to remember.
+    Args:
+        key: What to remember (e.g., "language", "name", "diet")
+        value: The value to remember
+    """</span>
+    <span class="cm"># In production: save to database
+    # For demo: acknowledge saving</span>
+    <span class="kw">return</span> {<span class="str">"saved"</span>: <span class="kw">True</span>, <span class="str">"key"</span>: key, <span class="str">"value"</span>: value}
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"personal_assistant"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""You are a personal assistant who remembers preferences.
+When user tells you something about themselves (name, language, 
+preferences, dietary restrictions), use save_preference to remember it.
+Always use remembered preferences in future responses."""</span>,
+    tools=[<span class="fn">save_preference</span>],
+)</pre>
+    </div>
+  </div>
+</div>
+
+<div class="lecture" id="w2l6">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(96,165,250,0.1);color:var(--w2)">DAY 13-14</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Week 2 Project — Full-Featured Personal Assistant with 6 Tools</div>
+      <div class="lecture-meta"><span>🛠️ Project</span><span>⏱ 3 hours</span><span>🏆 Capstone</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+    <h3>🤖 SuperAssistant — 6 Tools Agent</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">super_assistant/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">requests</span>, <span class="dec">json</span>, <span class="dec">os</span>, <span class="dec">math</span>
+<span class="kw">from</span> <span class="dec">datetime</span> <span class="kw">import</span> datetime
+<span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+
+<span class="kw">def</span> <span class="fn">calculator</span>(expression: str) -> dict:
+    <span class="str">"""Evaluate a mathematical expression safely.
+    Use for any math calculation the user needs.
+    Args: expression: Math expression like "2 + 2", "sqrt(16)", "15% of 2000"
+    """</span>
+    <span class="kw">try</span>:
+        <span class="cm"># Safe eval with math functions</span>
+        safe_dict = {<span class="str">"sqrt"</span>: math.sqrt, <span class="str">"pi"</span>: math.pi,
+                     <span class="str">"sin"</span>: math.sin, <span class="str">"cos"</span>: math.cos, <span class="str">"log"</span>: math.log}
+        result = <span class="fn">eval</span>(expression, {<span class="str">"__builtins__"</span>: {}}, safe_dict)
+        <span class="kw">return</span> {<span class="str">"expression"</span>: expression, <span class="str">"result"</span>: result}
+    <span class="kw">except Exception</span> <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">str</span>(e)}
+
+<span class="kw">def</span> <span class="fn">get_time</span>(city: str = <span class="str">"Mumbai"</span>) -> dict:
+    <span class="str">"""Get current date and time. Use when asked about time or date."""</span>
+    now = datetime.now()
+    <span class="kw">return</span> {<span class="str">"datetime"</span>: now.strftime(<span class="str">"%A, %d %B %Y — %I:%M %p"</span>)}
+
+<span class="kw">def</span> <span class="fn">set_reminder</span>(task: str, time_description: str) -> dict:
+    <span class="str">"""Set a reminder for a task. Use when user wants to remember something.
+    Args: task: What to remember, time_description: When (e.g., "in 30 minutes")
+    """</span>
+    <span class="kw">return</span> {<span class="str">"reminder_set"</span>: <span class="kw">True</span>, <span class="str">"task"</span>: task, <span class="str">"when"</span>: time_description,
+            <span class="str">"note"</span>: <span class="str">"Reminder logged (integrate with calendar API for real alerts)"</span>}
+
+<span class="kw">def</span> <span class="fn">convert_units</span>(value: float, from_unit: str, to_unit: str) -> dict:
+    <span class="str">"""Convert between common units of measurement.
+    Args: value: the number, from_unit: source unit, to_unit: target unit
+    Supports: km/miles, kg/lbs, celsius/fahrenheit, liters/gallons
+    """</span>
+    conversions = {
+        (<span class="str">"km"</span>, <span class="str">"miles"</span>): <span class="kw">lambda</span> x: x * <span class="num">0.621371</span>,
+        (<span class="str">"miles"</span>, <span class="str">"km"</span>): <span class="kw">lambda</span> x: x * <span class="num">1.60934</span>,
+        (<span class="str">"kg"</span>, <span class="str">"lbs"</span>): <span class="kw">lambda</span> x: x * <span class="num">2.20462</span>,
+        (<span class="str">"lbs"</span>, <span class="str">"kg"</span>): <span class="kw">lambda</span> x: x * <span class="num">0.453592</span>,
+        (<span class="str">"c"</span>, <span class="str">"f"</span>): <span class="kw">lambda</span> x: (x * <span class="num">9</span>/<span class="num">5</span>) + <span class="num">32</span>,
+        (<span class="str">"f"</span>, <span class="str">"c"</span>): <span class="kw">lambda</span> x: (x - <span class="num">32</span>) * <span class="num">5</span>/<span class="num">9</span>,
+    }
+    key = (from_unit.lower(), to_unit.lower())
+    <span class="kw">if</span> key <span class="kw">in</span> conversions:
+        result = conversions[key](value)
+        <span class="kw">return</span> {<span class="str">"result"</span>: <span class="fn">round</span>(result, <span class="num">4</span>), <span class="str">"from"</span>: <span class="fn">f</span><span class="str">"{value} {from_unit}"</span>,
+                <span class="str">"to"</span>: <span class="fn">f</span><span class="str">"{result:.4f} {to_unit}"</span>}
+    <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"Conversion {from_unit} → {to_unit} not supported"</span>}
+
+<span class="kw">def</span> <span class="fn">word_count</span>(text: str) -> dict:
+    <span class="str">"""Count words, characters, sentences in text.
+    Use when user wants to know length/stats about their writing.
+    """</span>
+    words = text.split()
+    sentences = text.count(<span class="str">'.'</span>) + text.count(<span class="str">'!'</span>) + text.count(<span class="str">'?'</span>)
+    <span class="kw">return</span> {<span class="str">"words"</span>: <span class="fn">len</span>(words), <span class="str">"characters"</span>: <span class="fn">len</span>(text),
+            <span class="str">"sentences"</span>: sentences, <span class="str">"reading_time_min"</span>: <span class="fn">round</span>(<span class="fn">len</span>(words)/<span class="num">200</span>, <span class="num">1</span>)}
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"super_assistant"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"A feature-rich personal assistant with multiple capabilities."</span>,
+    instruction=<span class="str">"""You are JARVIS, a sophisticated personal assistant.
+
+CAPABILITIES:
+- 🔍 Web search (real-time information)
+- 🧮 Mathematics and calculations
+- 🕐 Current time and date
+- ⏰ Set reminders
+- 📏 Unit conversions (km, miles, kg, lbs, temp)
+- 📝 Text analysis (word count, reading time)
+
+PERSONALITY:
+- Professional yet warm
+- Proactively suggest related help
+- Always confirm reminders and calculations
+
+Always pick the most appropriate tool. Never fake results."""</span>,
+    tools=[<span class="var">google_search</span>, <span class="fn">calculator</span>, <span class="fn">get_time</span>,
+           <span class="fn">set_reminder</span>, <span class="fn">convert_units</span>, <span class="fn">word_count</span>],
+)</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     WEEK 3 — MULTI-AGENT
+════════════════════════════════════════ -->
+<div class="week-banner w3-banner" id="week3">
+  <div class="week-banner-tag">Week 3 · Days 15–21</div>
+  <h2>🤝 Multi-Agent Systems — Agents Working Together</h2>
+  <p>One agent is powerful. A team of specialized agents is unstoppable. This week you'll build orchestrated systems where agents delegate, collaborate, and run in parallel.</p>
+  <div class="week-pills">
+    <span class="pill">SequentialAgent</span><span class="pill">ParallelAgent</span>
+    <span class="pill">LoopAgent</span><span class="pill">Sub-agents</span>
+    <span class="pill">Routing</span><span class="pill">Orchestration</span>
+  </div>
+</div>
+
+<!-- L13 -->
+<div class="lecture" id="w3l1">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 15</span>
+    <div class="lecture-info">
+      <div class="lecture-title">The 4 Agent Types — Complete Deep Dive</div>
+      <div class="lecture-meta"><span>🏗️ Architecture</span><span>⏱ 60 min</span><span>🎯 Core knowledge</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <div class="analogy amber">
+      Think of building a restaurant: You don't have one person cook, wait tables, manage billing, and greet customers. You have <strong>specialists</strong>. The manager (orchestrator) decides who does what. That's multi-agent architecture.
+    </div>
+
+    <h3>The 4 Agent Types in ADK</h3>
+    <div class="concepts">
+      <div class="concept-card">
+        <span class="icon">🧠</span>
+        <h4>LlmAgent</h4>
+        <p>The "thinking" agent. Uses an LLM to reason, make decisions, call tools, and respond. Most agents you build.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">📋</span>
+        <h4>SequentialAgent</h4>
+        <p>Runs sub-agents one after another in order. Output of each feeds the next. Like an assembly line.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">⚡</span>
+        <h4>ParallelAgent</h4>
+        <p>Runs multiple sub-agents simultaneously. Fastest when tasks are independent. Like parallel processing.</p>
+      </div>
+      <div class="concept-card">
+        <span class="icon">🔁</span>
+        <h4>LoopAgent</h4>
+        <p>Repeats sub-agents until a condition is met. For quality loops, retries, and iterative refinement.</p>
+      </div>
+    </div>
+
+    <h3>Visual — How Each Type Works</h3>
+
+    <div class="section-label">Sequential — One After Another</div>
+    <div class="agent-diagram">
+      <div class="agent-box"><div class="ab-icon">📥</div><div class="ab-name">User Input</div><div class="ab-type">message</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box s1"><div class="ab-icon">🔍</div><div class="ab-name">Research</div><div class="ab-type">LlmAgent</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box s1"><div class="ab-icon">🧠</div><div class="ab-name">Analyze</div><div class="ab-type">LlmAgent</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box s1"><div class="ab-icon">✍️</div><div class="ab-name">Write</div><div class="ab-type">LlmAgent</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box root"><div class="ab-icon">📄</div><div class="ab-name">Report</div><div class="ab-type">output</div></div>
+    </div>
+
+    <div class="section-label">Parallel — All at Once</div>
+    <div class="agent-diagram" style="flex-wrap:wrap;gap:8px">
+      <div class="agent-box"><div class="ab-icon">📥</div><div class="ab-name">User Input</div></div>
+      <div class="agent-arrow">→</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="agent-box s1"><div class="ab-icon">✈️</div><div class="ab-name">Flight Agent</div></div>
+        <div class="agent-box s1"><div class="ab-icon">🏨</div><div class="ab-name">Hotel Agent</div></div>
+        <div class="agent-box s1"><div class="ab-icon">🎡</div><div class="ab-name">Activity Agent</div></div>
+      </div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box root"><div class="ab-icon">📋</div><div class="ab-name">Merged Plan</div></div>
+    </div>
+
+    <h3>When to Use Which</h3>
+    <table class="comp-table">
+      <tr><th>Use Case</th><th>Agent Type</th><th>Why</th></tr>
+      <tr><td>Research → Analyze → Write</td><td>SequentialAgent</td><td>Each step needs the previous step's output</td></tr>
+      <tr><td>Search flights + hotels + activities</td><td>ParallelAgent</td><td>Independent tasks — faster to run together</td></tr>
+      <tr><td>Write → Review → Improve → Review</td><td>LoopAgent</td><td>Repeat until quality threshold is met</td></tr>
+      <tr><td>Route to specialist based on topic</td><td>LlmAgent + sub_agents</td><td>Dynamic routing by the orchestrator LLM</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- L14 -->
+<div class="lecture" id="w3l2">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 16</span>
+    <div class="lecture-info">
+      <div class="lecture-title">SequentialAgent — Building Assembly Line Pipelines</div>
+      <div class="lecture-meta"><span>🔗 Sequential</span><span>⏱ 60 min</span><span>💻 Heavy coding</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>Complete Blog Writing Pipeline</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">blog_pipeline/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>, <span class="cls">SequentialAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+
+<span class="cm"># ── Stage 1: Research the topic ─────────────────</span>
+<span class="var">researcher</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"researcher"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Research the given topic thoroughly.
+Find: key facts, current statistics, interesting angles, target audience.
+Use search for current data.
+Output structured research notes."""</span>,
+    tools=[<span class="var">google_search</span>],
+    output_key=<span class="str">"research"</span>,
+)
+
+<span class="cm"># ── Stage 2: Create outline ──────────────────────</span>
+<span class="var">outliner</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"outliner"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Based on this research, create a blog post outline:
+
+RESEARCH:
+{research}
+
+Create:
+- Catchy headline (10 words max)
+- 5-7 section headings
+- 2-3 bullet points per section
+- Target word count per section"""</span>,
+    output_key=<span class="str">"outline"</span>,
+)
+
+<span class="cm"># ── Stage 3: Write the post ──────────────────────</span>
+<span class="var">writer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"writer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Write a complete, engaging blog post.
+
+OUTLINE TO FOLLOW:
+{outline}
+
+RESEARCH TO USE:
+{research}
+
+Style: conversational, informative, 1000-1200 words.
+Use subheadings, short paragraphs, examples.
+End with a clear call-to-action."""</span>,
+    output_key=<span class="str">"draft"</span>,
+)
+
+<span class="cm"># ── Stage 4: SEO optimize ────────────────────────</span>
+<span class="var">seo_editor</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"seo_editor"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Review and optimize this blog post for SEO and readability.
+
+DRAFT:
+{draft}
+
+Improve:
+- Add relevant keywords naturally
+- Ensure meta description (150 chars)
+- Check heading structure (H1, H2, H3)
+- Add internal/external link suggestions [in brackets]
+- Rate readability: Flesch score estimate
+
+Output: Final optimized post + SEO checklist."""</span>,
+)
+
+<span class="cm"># ── Pipeline: Wire all stages ────────────────────</span>
+<span class="var">root_agent</span> = <span class="cls">SequentialAgent</span>(
+    name=<span class="str">"blog_pipeline"</span>,
+    description=<span class="str">"Fully automated blog writing: Research→Outline→Write→SEO"</span>,
+    sub_agents=[<span class="var">researcher</span>, <span class="var">outliner</span>, <span class="var">writer</span>, <span class="var">seo_editor</span>],
+)</pre>
+    </div>
+
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk web</code><span class="cmd-note">then type: "Write a blog about AI in Indian healthcare"</span></div>
+
+  </div>
+</div>
+
+<!-- L15 -->
+<div class="lecture" id="w3l3">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 17</span>
+    <div class="lecture-info">
+      <div class="lecture-title">ParallelAgent — Running Tasks Simultaneously</div>
+      <div class="lecture-meta"><span>⚡ Parallel</span><span>⏱ 50 min</span><span>🚀 Performance</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>⚡ Why Parallel?</h3>
+    <div class="explain">
+      If you have 3 tasks that each take 5 seconds and don't depend on each other: <br>
+      Sequential: 5 + 5 + 5 = <strong>15 seconds</strong><br>
+      Parallel: max(5, 5, 5) = <strong>5 seconds</strong><br><br>
+      ParallelAgent runs sub-agents as async tasks simultaneously.
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">travel_planner/agent.py — Parallel travel research</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>, <span class="cls">ParallelAgent</span>, <span class="cls">SequentialAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+
+<span class="cm"># These 3 run SIMULTANEOUSLY — saves time!</span>
+<span class="var">flight_researcher</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"flight_researcher"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"Search for flight options for the requested trip. Find prices, airlines, duration."</span>,
+    tools=[<span class="var">google_search</span>],
+    output_key=<span class="str">"flight_info"</span>,
+)
+
+<span class="var">hotel_researcher</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"hotel_researcher"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"Search for hotel options for the destination. Find prices, ratings, locations."</span>,
+    tools=[<span class="var">google_search</span>],
+    output_key=<span class="str">"hotel_info"</span>,
+)
+
+<span class="var">activity_researcher</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"activity_researcher"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"Search for top activities, restaurants, and attractions at the destination."</span>,
+    tools=[<span class="var">google_search</span>],
+    output_key=<span class="str">"activity_info"</span>,
+)
+
+<span class="cm"># All 3 run at the same time ↓</span>
+<span class="var">parallel_researcher</span> = <span class="cls">ParallelAgent</span>(
+    name=<span class="str">"parallel_researcher"</span>,
+    sub_agents=[<span class="var">flight_researcher</span>, <span class="var">hotel_researcher</span>, <span class="var">activity_researcher</span>],
+)
+
+<span class="cm"># Then synthesize all results into one plan</span>
+<span class="var">trip_planner</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"trip_planner"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Create a comprehensive travel plan using all research:
+
+FLIGHTS: {flight_info}
+HOTELS: {hotel_info}  
+ACTIVITIES: {activity_info}
+
+Format as a day-by-day itinerary with:
+- Best flight recommendation
+- Hotel recommendation with reason
+- Daily schedule with activities and meals
+- Estimated budget breakdown"""</span>,
+)
+
+<span class="cm"># Parallel research → then sequential synthesis</span>
+<span class="var">root_agent</span> = <span class="cls">SequentialAgent</span>(
+    name=<span class="str">"travel_planner"</span>,
+    sub_agents=[<span class="var">parallel_researcher</span>, <span class="var">trip_planner</span>],
+)</pre>
+    </div>
+
+    <div class="tip-box">You can nest agent types! Here we run 3 agents in parallel, then pass all their outputs to a final sequential agent that synthesizes everything.</div>
+
+  </div>
+</div>
+
+<!-- L16 -->
+<div class="lecture" id="w3l4">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 18</span>
+    <div class="lecture-info">
+      <div class="lecture-title">LoopAgent — Iterative Refinement & Quality Control</div>
+      <div class="lecture-meta"><span>🔁 Loops</span><span>⏱ 50 min</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🔁 What LoopAgent Does</h3>
+    <div class="analogy amber">
+      Like a chef who tastes the soup, adjusts salt, tastes again — repeating until perfect. LoopAgent keeps running its sub-agents until a stopping condition is met or max_iterations is reached.
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">quality_loop/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>, <span class="cls">LoopAgent</span>, <span class="cls">SequentialAgent</span>
+
+<span class="cm"># Writer creates/improves content</span>
+<span class="var">writer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"writer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Write or improve an email based on feedback.
+
+If {feedback} exists, incorporate all feedback points.
+If no feedback yet, write a first draft for: {user_request}
+
+Goal: Professional, concise, clear email."""</span>,
+    output_key=<span class="str">"email_draft"</span>,
+)
+
+<span class="cm"># Critic evaluates and decides to continue or stop</span>
+<span class="var">critic</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"critic"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Review this email draft and evaluate quality:
+
+EMAIL DRAFT:
+{email_draft}
+
+Score on: Clarity (1-10), Tone (1-10), Conciseness (1-10), Professionalism (1-10)
+
+If ANY score is below 7:
+- List specific improvements needed
+- Output these as {feedback}
+- Set escalate=false (needs another revision)
+
+If ALL scores are 7+:
+- Output "APPROVED: This email meets quality standards"
+- Set escalate=true (done!)"""</span>,
+    output_key=<span class="str">"feedback"</span>,
+)
+
+<span class="cm"># Loop: writer + critic, up to 3 times</span>
+<span class="var">quality_loop</span> = <span class="cls">LoopAgent</span>(
+    name=<span class="str">"quality_loop"</span>,
+    sub_agents=[<span class="var">writer</span>, <span class="var">critic</span>],
+    max_iterations=<span class="num">3</span>,  <span class="cm"># safety limit</span>
+)
+
+<span class="var">root_agent</span> = <span class="var">quality_loop</span>  <span class="cm"># can also wrap in SequentialAgent</span></pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- L17 -->
+<div class="lecture" id="w3l5">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 19</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Sub-agents & Dynamic Routing — Smart Orchestration</div>
+      <div class="lecture-meta"><span>🎯 Routing</span><span>⏱ 55 min</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🎯 What is Dynamic Routing?</h3>
+    <div class="explain">
+      When you give an LlmAgent a list of <strong>sub_agents</strong>, it can decide at runtime which sub-agent to hand off to. The LLM reads each sub-agent's <strong>description</strong> and decides who's best for the job — like a manager delegating to specialists.
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">support_router/agent.py — Customer Support Router</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="cm"># Specialist agents — descriptions are crucial for routing!</span>
+<span class="var">billing_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"billing_specialist"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Handles billing issues, payment problems, invoices, refunds, and subscription changes."</span>,
+    instruction=<span class="str">"""You are a billing specialist. Handle:
+- Payment failures and retries
+- Invoice questions and corrections
+- Refund requests (process within policy)
+- Subscription upgrades/downgrades
+Always verify customer ID before making changes."""</span>,
+)
+
+<span class="var">technical_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"technical_specialist"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Handles technical issues, bugs, app errors, connectivity problems, and feature questions."</span>,
+    instruction=<span class="str">"""You are a technical support specialist. Handle:
+- App crashes and error messages
+- Login and authentication issues
+- Feature usage guidance
+- Bug reports (collect: steps to reproduce, device, version)
+Escalate to engineering if bug is confirmed."""</span>,
+)
+
+<span class="var">general_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"general_support"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Handles general inquiries, account info, policies, and questions not fitting other categories."</span>,
+    instruction=<span class="str">"""You are a general support agent. Handle:
+- Account information requests
+- Policy questions
+- Product information
+- Feedback and complaints
+Be empathetic and solution-focused."""</span>,
+)
+
+<span class="cm"># ── The Router — decides who handles each request ──</span>
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"support_router"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Main customer support entry point."</span>,
+    instruction=<span class="str">"""You are a customer support triage agent.
+
+Your ONLY job: greet the customer, understand their issue, 
+and hand off to the right specialist.
+
+DO NOT try to solve the problem yourself.
+Read each specialist's description carefully.
+After handoff, the specialist will handle it."""</span>,
+    sub_agents=[<span class="var">billing_agent</span>, <span class="var">technical_agent</span>, <span class="var">general_agent</span>],
+)</pre>
+    </div>
+
+    <div class="output">User: My payment failed and I was charged twice!
+
+Router: I understand you're having a billing issue with a duplicate charge — 
+I'll connect you with our billing specialist right away.
+
+[Routes to billing_agent]
+
+Billing Specialist: I'm sorry to hear about the duplicate charge! 
+To help you quickly, could you please provide your account email or customer ID?</div>
+
+  </div>
+</div>
+
+<!-- L18 -->
+<div class="lecture" id="w3l6">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(245,158,11,0.1);color:var(--w3)">DAY 20-21</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Week 3 Project — Full E-commerce Multi-Agent System</div>
+      <div class="lecture-meta"><span>🛠️ Capstone</span><span>⏱ 4 hours</span><span>🏆 Advanced</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🛒 ShopBot — Complete E-commerce Agent Team</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">shopbot/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+
+<span class="cm"># Mock database (in production: connect to real DB)</span>
+PRODUCTS = {
+    <span class="str">"P001"</span>: {<span class="str">"name"</span>: <span class="str">"Wireless Earbuds Pro"</span>, <span class="str">"price"</span>: <span class="num">2499</span>, <span class="str">"stock"</span>: <span class="num">50</span>},
+    <span class="str">"P002"</span>: {<span class="str">"name"</span>: <span class="str">"Laptop Stand Adjustable"</span>, <span class="str">"price"</span>: <span class="num">1299</span>, <span class="str">"stock"</span>: <span class="num">23</span>},
+    <span class="str">"P003"</span>: {<span class="str">"name"</span>: <span class="str">"USB-C Hub 7-in-1"</span>, <span class="str">"price"</span>: <span class="num">1799</span>, <span class="str">"stock"</span>: <span class="num">0</span>},
+}
+ORDERS = {}
+
+<span class="kw">def</span> <span class="fn">search_products</span>(query: str, max_price: float = <span class="num">99999</span>) -> dict:
+    <span class="str">"""Search for products by name or category. Filter by price.
+    Args: query: search terms, max_price: maximum price in rupees
+    """</span>
+    results = []
+    <span class="kw">for</span> pid, p <span class="kw">in</span> PRODUCTS.items():
+        <span class="kw">if</span> query.lower() <span class="kw">in</span> p[<span class="str">"name"</span>].lower() <span class="kw">and</span> p[<span class="str">"price"</span>] <= max_price:
+            results.append({<span class="str">"id"</span>: pid, **p})
+    <span class="kw">return</span> {<span class="str">"products"</span>: results, <span class="str">"count"</span>: <span class="fn">len</span>(results)}
+
+<span class="kw">def</span> <span class="fn">check_stock</span>(product_id: str) -> dict:
+    <span class="str">"""Check if a product is in stock.
+    Args: product_id: The product ID (e.g., P001)
+    """</span>
+    <span class="kw">if</span> product_id <span class="kw">in</span> PRODUCTS:
+        p = PRODUCTS[product_id]
+        <span class="kw">return</span> {<span class="str">"in_stock"</span>: p[<span class="str">"stock"</span>] > <span class="num">0</span>, <span class="str">"quantity"</span>: p[<span class="str">"stock"</span>], <span class="str">"product"</span>: p[<span class="str">"name"</span>]}
+    <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Product not found"</span>}
+
+<span class="kw">def</span> <span class="fn">place_order</span>(product_id: str, quantity: int, customer_name: str) -> dict:
+    <span class="str">"""Place an order for a product.
+    Args: product_id: Product to order, quantity: how many, customer_name: buyer name
+    """</span>
+    <span class="kw">import</span> <span class="dec">random</span>
+    <span class="kw">if</span> product_id <span class="kw">not in</span> PRODUCTS:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Product not found"</span>}
+    <span class="kw">if</span> PRODUCTS[product_id][<span class="str">"stock"</span>] < quantity:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Insufficient stock"</span>}
+    order_id = <span class="fn">f</span><span class="str">"ORD{random.randint(10000,99999)}"</span>
+    total = PRODUCTS[product_id][<span class="str">"price"</span>] * quantity
+    PRODUCTS[product_id][<span class="str">"stock"</span>] -= quantity
+    ORDERS[order_id] = {<span class="str">"product_id"</span>: product_id, <span class="str">"quantity"</span>: quantity,
+                        <span class="str">"customer"</span>: customer_name, <span class="str">"total"</span>: total, <span class="str">"status"</span>: <span class="str">"confirmed"</span>}
+    <span class="kw">return</span> {<span class="str">"order_id"</span>: order_id, <span class="str">"total_inr"</span>: total, <span class="str">"status"</span>: <span class="str">"confirmed"</span>,
+            <span class="str">"estimated_delivery"</span>: <span class="str">"3-5 business days"</span>}
+
+<span class="kw">def</span> <span class="fn">track_order</span>(order_id: str) -> dict:
+    <span class="str">"""Track the status of an existing order.
+    Args: order_id: The order ID to track (format: ORDxxxxx)
+    """</span>
+    <span class="kw">if</span> order_id <span class="kw">in</span> ORDERS:
+        <span class="kw">return</span> ORDERS[order_id]
+    <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Order not found"</span>}
+
+<span class="var">root_agent</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"shopbot"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Complete e-commerce assistant for shopping, orders, and tracking."</span>,
+    instruction=<span class="str">"""You are ShopBot, a helpful e-commerce assistant for TechStore India.
+
+CAPABILITIES:
+🔍 search_products — Find products by name/category with optional price filter
+📦 check_stock — Verify product availability
+🛒 place_order — Complete a purchase (always confirm details before placing!)
+📍 track_order — Check delivery status
+
+SHOPPING FLOW:
+1. Help user find the right product
+2. Check stock availability
+3. Show total price (product price × quantity + ₹50 delivery)
+4. Confirm all details with user BEFORE placing order
+5. Place order and share order ID
+
+PERSONALITY:
+- Warm and helpful, like a knowledgeable shop assistant
+- Proactively suggest related products
+- Always confirm before any irreversible action"""</span>,
+    tools=[<span class="fn">search_products</span>, <span class="fn">check_stock</span>, <span class="fn">place_order</span>, <span class="fn">track_order</span>],
+)</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     WEEK 4 — PRODUCTION
+════════════════════════════════════════ -->
+<div class="week-banner w4-banner" id="week4">
+  <div class="week-banner-tag">Week 4 · Days 22–30</div>
+  <h2>🚀 Production — Testing, Debugging & Deploying</h2>
+  <p>Your agents work. Now make them production-ready. This week covers MCP tools, evaluation, debugging with the ADK UI, deploying to Cloud Run, and advanced patterns.</p>
+  <div class="week-pills">
+    <span class="pill">MCP Protocol</span><span class="pill">Evaluation</span>
+    <span class="pill">ADK Web UI</span><span class="pill">Cloud Run</span>
+    <span class="pill">Streaming</span><span class="pill">Capstone</span>
+  </div>
+</div>
+
+<!-- L19 -->
+<div class="lecture" id="w4l1">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 22</span>
+    <div class="lecture-info">
+      <div class="lecture-title">MCP Tools — Connecting to External Services</div>
+      <div class="lecture-meta"><span>🔌 MCP</span><span>⏱ 60 min</span><span>🌐 External integrations</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🔌 What is MCP?</h3>
+    <div class="explain">
+      MCP (Model Context Protocol) is an open standard that lets AI agents connect to external servers — databases, APIs, file systems — using a standardized interface. Think of it as a universal adapter for AI tools.
+    </div>
+    <div class="analogy">
+      USB-C is a universal port — any device, any cable, one standard. MCP is the USB-C for AI tools. Any MCP server works with any MCP-compatible AI framework.
+    </div>
+
+    <h3>📁 Filesystem MCP — Read/Write Files</h3>
+    <div class="cmd"><span class="cmd-ps">$</span><code>npm install -g @modelcontextprotocol/server-filesystem</code></div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">mcp_agent/agent.py</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">asyncio</span>
+<span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools.mcp_tool.mcp_toolset</span> <span class="kw">import</span> <span class="cls">MCPToolset</span>, <span class="cls">StdioServerParameters</span>
+
+<span class="kw">async def</span> <span class="fn">create_agent</span>():
+    <span class="cm"># Connect to filesystem MCP server</span>
+    tools, exit_stack = <span class="kw">await</span> <span class="cls">MCPToolset</span>.from_server(
+        connection_params=<span class="cls">StdioServerParameters</span>(
+            command=<span class="str">"npx"</span>,
+            args=[<span class="str">"-y"</span>, <span class="str">"@modelcontextprotocol/server-filesystem"</span>,
+                  <span class="str">"/Users/you/documents"</span>],  <span class="cm"># ← your folder</span>
+        )
+    )
+    
+    agent = <span class="cls">LlmAgent</span>(
+        name=<span class="str">"file_assistant"</span>,
+        model=<span class="str">"gemini-2.0-flash"</span>,
+        description=<span class="str">"Can read, write, and organize files on your computer."</span>,
+        instruction=<span class="str">"""You are a file management assistant.
+You can read files, write new files, list directories, and organize content.
+Always confirm before writing or deleting files."""</span>,
+        tools=tools,  <span class="cm"># ← MCP tools injected here</span>
+    )
+    
+    <span class="kw">return</span> agent, exit_stack
+
+<span class="cm"># In production: call create_agent() and use the returned agent</span>
+<span class="cm"># The exit_stack ensures proper cleanup when done</span></pre>
+    </div>
+
+    <h3>Popular MCP Servers Available</h3>
+    <table class="comp-table">
+      <tr><th>MCP Server</th><th>What it gives your agent</th></tr>
+      <tr><td>@modelcontextprotocol/server-filesystem</td><td>Read/write local files and directories</td></tr>
+      <tr><td>@modelcontextprotocol/server-github</td><td>GitHub repos, issues, PRs, code search</td></tr>
+      <tr><td>@modelcontextprotocol/server-postgres</td><td>Query PostgreSQL databases with SQL</td></tr>
+      <tr><td>@modelcontextprotocol/server-slack</td><td>Send/read Slack messages and channels</td></tr>
+      <tr><td>mcp-server-sqlite</td><td>Read/write SQLite databases</td></tr>
+      <tr><td>@notionhq/notion-mcp-server</td><td>Read/write Notion pages and databases</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- L20 -->
+<div class="lecture" id="w4l2">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 23</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Evaluation & Testing — How Good is Your Agent?</div>
+      <div class="lecture-meta"><span>🧪 Testing</span><span>⏱ 50 min</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🧪 Why Evaluate?</h3>
+    <div class="explain">
+      You can't improve what you don't measure. ADK has a built-in evaluation framework to test your agent against predefined test cases.
+    </div>
+
+    <h3>Writing Test Cases</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">tests/test_chef_agent.json</span><span class="lang">json</span></div>
+      <pre>{
+  "eval_set_id": "chef_agent_tests",
+  "eval_cases": [
+    {
+      "eval_id": "basic_recipe_request",
+      "conversation": [
+        {
+          "invocation": {
+            "user_content": {
+              "parts": [{"text": "How do I make dosa?"}]
+            }
+          },
+          "reference_agent_actions": [
+            {
+              "agent_name": "chef_agent",
+              "author": "chef_agent",
+              "actions": {
+                "state_delta": {}
+              }
+            }
+          ],
+          "reference_final_response": "Dosa recipe with ingredients and steps"
+        }
+      ]
+    },
+    {
+      "eval_id": "ingredient_substitution",
+      "conversation": [
+        {
+          "invocation": {
+            "user_content": {
+              "parts": [{"text": "I don't have rice flour, what can I use instead for dosa?"}]
+            }
+          },
+          "reference_final_response": "Substitution suggestion for rice flour in dosa"
+        }
+      ]
+    }
+  ]
+}</pre>
+    </div>
+
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk eval chef_agent tests/test_chef_agent.json</code></div>
+
+    <h3>Manual Testing Checklist</h3>
+    <ul class="checklist">
+      <li>Test happy path — does it handle normal requests correctly?</li>
+      <li>Test edge cases — what if input is empty, too long, or in another language?</li>
+      <li>Test tool failures — what if an API call fails? Does it handle gracefully?</li>
+      <li>Test multi-turn — does it remember context across 5+ messages?</li>
+      <li>Test off-topic — does it stay in its lane or hallucinate?</li>
+      <li>Test adversarial — try to make it break its instructions</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- L21 -->
+<div class="lecture" id="w4l3">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 24</span>
+    <div class="lecture-info">
+      <div class="lecture-title">ADK Web UI — Debugging Like a Pro</div>
+      <div class="lecture-meta"><span>🔍 Debug</span><span>⏱ 40 min</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🖥️ The ADK Web UI</h3>
+    <div class="explain">Running <code>adk web</code> opens a powerful development UI at localhost:8000. It shows you everything happening inside your agent — perfect for debugging.</div>
+
+    <div class="steps">
+      <div class="step"><div class="step-content"><h4>Event Timeline</h4><p>See every step: user message → LLM thinking → tool call → tool result → LLM response. Identify exactly where things go wrong.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Session State Inspector</h4><p>See the full session state dictionary in real time. Check what output_key values are stored after each agent runs.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Tool Call Inspector</h4><p>See exactly what arguments the LLM passed to each tool, and what the tool returned. Debug tool issues instantly.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Token Counter</h4><p>See how many tokens each request used. Helps optimize context and control costs.</p></div></div>
+      <div class="step"><div class="step-content"><h4>Multi-Agent Trace</h4><p>In multi-agent systems, see which agent handled which part, and the full handoff chain.</p></div></div>
+    </div>
+
+    <h3>Common Debug Patterns</h3>
+    <table class="comp-table">
+      <tr><th>Problem</th><th>Check in UI</th><th>Fix</th></tr>
+      <tr><td>Tool never called</td><td>Event timeline</td><td>Improve tool docstring — be more explicit about when to use it</td></tr>
+      <tr><td>Wrong tool arguments</td><td>Tool call inspector</td><td>Add examples in docstring; check type hints</td></tr>
+      <tr><td>{key} shows as literal text</td><td>Session state</td><td>Verify output_key was set correctly in previous agent</td></tr>
+      <tr><td>Agent ignores instructions</td><td>LLM input</td><td>Move important rules to top of instruction; be more explicit</td></tr>
+      <tr><td>High token usage</td><td>Token counter</td><td>Shorten instruction; limit output_key values</td></tr>
+    </table>
+
+  </div>
+</div>
+
+<!-- L22 -->
+<div class="lecture" id="w4l4">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 25</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Deploying to Cloud Run — Go Live!</div>
+      <div class="lecture-meta"><span>☁️ Deploy</span><span>⏱ 60 min</span><span>🌍 Production</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🌍 Deploy in One Command</h3>
+    <div class="explain">ADK can deploy your agent to Google Cloud Run — a serverless platform that scales automatically from 0 to millions of requests. You only pay when it's used.</div>
+
+    <div class="steps">
+      <div class="step"><div class="step-content"><h4>Install Google Cloud CLI</h4><p>Download from cloud.google.com/sdk — authenticate with <code>gcloud auth login</code></p></div></div>
+      <div class="step"><div class="step-content"><h4>Create a project</h4><p>At console.cloud.google.com — enable billing (small amounts for testing, free tier available)</p></div></div>
+      <div class="step"><div class="step-content"><h4>Deploy!</h4><p>One command handles containerization, pushing, and deployment.</p></div></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Deploy command</span><span class="lang">bash</span></div>
+      <pre><span class="cm"># Set your project</span>
+gcloud config set project YOUR_PROJECT_ID
+
+<span class="cm"># Deploy to Cloud Run</span>
+adk deploy cloud_run \
+  --project YOUR_PROJECT_ID \
+  --region us-central1 \
+  --set-env-vars GOOGLE_API_KEY=your-key \
+  my_first_agent
+
+<span class="cm"># That's it! ADK handles:
+# ✅ Creating a Dockerfile
+# ✅ Building the container
+# ✅ Pushing to Google Container Registry  
+# ✅ Deploying to Cloud Run
+# ✅ Setting up HTTPS endpoint</span></pre>
+    </div>
+
+    <div class="output">Successfully deployed to Cloud Run!
+Service URL: https://my-first-agent-abc123-uc.a.run.app
+
+You can now chat with your agent at this URL.
+Share this with anyone — it's live on the internet!</div>
+
+    <h3>📦 What Gets Deployed</h3>
+    <ul class="checklist">
+      <li>Your agent is containerized with Docker (ADK handles this automatically)</li>
+      <li>It runs as an HTTP server with a REST API endpoint</li>
+      <li>HTTPS is included by default — secure out of the box</li>
+      <li>Scales to 0 when not used — no cost when idle</li>
+      <li>Scales up automatically when traffic increases</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- L23 -->
+<div class="lecture" id="w4l5">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 26-27</span>
+    <div class="lecture-info">
+      <div class="lecture-title">Advanced Patterns — Streaming, Error Handling & Best Practices</div>
+      <div class="lecture-meta"><span>⚡ Advanced</span><span>⏱ 90 min</span><span>🏆 Expert level</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <h3>🌊 Streaming Responses</h3>
+    <div class="explain">For long responses, streaming shows text word-by-word instead of waiting for the full response. Much better user experience.</div>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Streaming example</span><span class="lang">python</span></div>
+      <pre><span class="kw">async for</span> event <span class="kw">in</span> runner.run_async(...):
+    <span class="cm"># Check for streaming text chunks</span>
+    <span class="kw">if</span> event.content <span class="kw">and not</span> event.is_final_response():
+        <span class="kw">for</span> part <span class="kw">in</span> event.content.parts:
+            <span class="kw">if</span> <span class="fn">hasattr</span>(part, <span class="str">'text'</span>) <span class="kw">and</span> part.text:
+                print(part.text, end=<span class="str">""</span>, flush=<span class="kw">True</span>)  <span class="cm"># print as it arrives</span>
+    
+    <span class="cm"># Final complete response</span>
+    <span class="kw">elif</span> event.is_final_response():
+        print()  <span class="cm"># newline after streaming</span></pre>
+    </div>
+
+    <h3>🛡️ Error Handling Patterns</h3>
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">Robust tool with error handling</span><span class="lang">python</span></div>
+      <pre><span class="kw">import</span> <span class="dec">requests</span>
+<span class="kw">from</span> <span class="dec">requests.exceptions</span> <span class="kw">import</span> <span class="cls">Timeout</span>, <span class="cls">ConnectionError</span>
+
+<span class="kw">def</span> <span class="fn">robust_api_call</span>(endpoint: str, params: dict) -> dict:
+    <span class="str">"""Make a robust API call with proper error handling.
+    Args: endpoint: API URL, params: Query parameters as dict
+    """</span>
+    <span class="kw">try</span>:
+        response = requests.get(
+            endpoint,
+            params=params,
+            timeout=<span class="num">10</span>,   <span class="cm"># 10 second timeout</span>
+            headers={<span class="str">"User-Agent"</span>: <span class="str">"MyAgent/1.0"</span>}
+        )
+        response.raise_for_status()  <span class="cm"># raises for 4xx/5xx</span>
+        <span class="kw">return</span> {<span class="str">"success"</span>: <span class="kw">True</span>, <span class="str">"data"</span>: response.json()}
+    
+    <span class="kw">except</span> <span class="cls">Timeout</span>:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Request timed out. Please try again."</span>}
+    <span class="kw">except</span> <span class="cls">ConnectionError</span>:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="str">"Cannot connect to service. Check internet."</span>}
+    <span class="kw">except</span> requests.exceptions.<span class="cls">HTTPError</span> <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"Service error: {e.response.status_code}"</span>}
+    <span class="kw">except</span> Exception <span class="kw">as</span> e:
+        <span class="kw">return</span> {<span class="str">"error"</span>: <span class="fn">f</span><span class="str">"Unexpected error: {str(e)}"</span>}</pre>
+    </div>
+
+    <h3>📋 Production Best Practices</h3>
+    <ul class="checklist">
+      <li>Always set <strong>max_iterations</strong> on LoopAgents to prevent infinite loops</li>
+      <li>Use <strong>try/except</strong> in all tools — never let a tool crash the agent</li>
+      <li>Store API keys in <strong>environment variables</strong>, never in code</li>
+      <li>Use <strong>DatabaseSessionService</strong> for persistent sessions in production</li>
+      <li>Add <strong>logging</strong> to track tool calls and errors in production</li>
+      <li>Set reasonable <strong>timeouts</strong> on all external API calls (10s default)</li>
+      <li>Write <strong>tests</strong> using adk eval before deploying changes</li>
+      <li>Monitor with <strong>Cloud Logging</strong> after deployment</li>
+    </ul>
+
+  </div>
+</div>
+
+<!-- L24 — CAPSTONE -->
+<div class="lecture" id="w4l6">
+  <div class="lecture-header" onclick="toggleLecture(this)">
+    <span class="lecture-num" style="background:rgba(244,114,182,0.1);color:var(--w4)">DAY 28-30</span>
+    <div class="lecture-info">
+      <div class="lecture-title">🏆 CAPSTONE — Full AI Research Agency (Advanced Multi-Agent)</div>
+      <div class="lecture-meta"><span>🏆 Capstone</span><span>⏱ Full day</span><span>🚀 Deploy-ready</span></div>
+    </div>
+    <span class="lecture-toggle">▶</span>
+  </div>
+  <div class="lecture-body">
+
+    <div class="explain">This is the final boss. We build a complete <strong>AI Research Agency</strong> — a multi-agent system that takes a research topic, assigns it to specialists, runs parallel research, writes a report, quality-checks it, and delivers a polished document. Everything you've learned, applied.</div>
+
+    <div class="agent-diagram" style="flex-wrap:wrap;gap:8px;">
+      <div class="agent-box root"><div class="ab-icon">🎯</div><div class="ab-name">Director</div><div class="ab-type">Orchestrator</div></div>
+      <div class="agent-arrow">→</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="agent-box"><div class="ab-icon">🔍</div><div class="ab-name">Web Researcher</div><div class="ab-type">+ search tool</div></div>
+        <div class="agent-box"><div class="ab-icon">📊</div><div class="ab-name">Data Analyst</div><div class="ab-type">+ code exec</div></div>
+        <div class="agent-box"><div class="ab-icon">🎓</div><div class="ab-name">Expert Analyst</div><div class="ab-type">LlmAgent</div></div>
+      </div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box"><div class="ab-icon">✍️</div><div class="ab-name">Writer</div><div class="ab-type">Report Writer</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box"><div class="ab-icon">🔁</div><div class="ab-name">Quality Loop</div><div class="ab-type">LoopAgent</div></div>
+      <div class="agent-arrow">→</div>
+      <div class="agent-box root"><div class="ab-icon">📑</div><div class="ab-name">Final Report</div><div class="ab-type">output</div></div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-block-header"><span class="filename">research_agency/agent.py — Complete Capstone</span><span class="lang">python</span></div>
+      <pre><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> <span class="cls">LlmAgent</span>, <span class="cls">SequentialAgent</span>, <span class="cls">ParallelAgent</span>, <span class="cls">LoopAgent</span>
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+<span class="kw">import</span> <span class="dec">json</span>, <span class="dec">datetime</span>
+
+<span class="cm"># ═══ TOOLS ══════════════════════════════════════</span>
+<span class="kw">def</span> <span class="fn">get_current_date</span>() -> dict:
+    <span class="str">"""Get today's date. Use at start of research for timestamps."""</span>
+    <span class="kw">return</span> {<span class="str">"date"</span>: datetime.datetime.now().strftime(<span class="str">"%B %d, %Y"</span>)}
+
+<span class="kw">def</span> <span class="fn">calculate_statistics</span>(data_description: str) -> dict:
+    <span class="str">"""Perform statistical analysis described in text.
+    Use when research mentions percentages, trends, or numerical data.
+    Args: data_description: Description of the data to analyze
+    """</span>
+    <span class="kw">return</span> {<span class="str">"analysis"</span>: <span class="fn">f</span><span class="str">"Statistical analysis of: {data_description}"</span>,
+            <span class="str">"note"</span>: <span class="str">"Integrate with real calculation library for production"</span>}
+
+<span class="cm"># ═══ PARALLEL RESEARCHERS ═══════════════════════</span>
+<span class="var">web_researcher</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"web_researcher"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Searches the web for current facts, news, and statistics."</span>,
+    instruction=<span class="str">"""Research the given topic by searching the web.
+Collect: current facts, recent news, statistics, expert quotes.
+Organize findings into clear sections.
+Note publication dates of sources."""</span>,
+    tools=[<span class="var">google_search</span>, <span class="fn">get_current_date</span>],
+    output_key=<span class="str">"web_research"</span>,
+)
+
+<span class="var">expert_analyst</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"expert_analyst"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Provides deep expert analysis, theories, and implications."</span>,
+    instruction=<span class="str">"""As a domain expert, analyze the research topic deeply.
+Provide: theoretical framework, root causes, implications, controversies.
+Draw on training knowledge for expert-level analysis.
+Identify what's missing from typical coverage of this topic."""</span>,
+    output_key=<span class="str">"expert_analysis"</span>,
+)
+
+<span class="var">data_analyst</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"data_analyst"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    description=<span class="str">"Focuses on data, numbers, trends, and quantitative aspects."</span>,
+    instruction=<span class="str">"""Analyze the quantitative aspects of the research topic.
+Find: market size, growth rates, key metrics, comparative data.
+Identify trends with supporting numbers.
+Create a data summary with key statistics."""</span>,
+    tools=[<span class="fn">calculate_statistics</span>],
+    output_key=<span class="str">"data_analysis"</span>,
+)
+
+<span class="cm"># ═══ PARALLEL RESEARCH STAGE ════════════════════</span>
+<span class="var">research_team</span> = <span class="cls">ParallelAgent</span>(
+    name=<span class="str">"research_team"</span>,
+    sub_agents=[<span class="var">web_researcher</span>, <span class="var">expert_analyst</span>, <span class="var">data_analyst</span>],
+)
+
+<span class="cm"># ═══ WRITER ═════════════════════════════════════</span>
+<span class="var">report_writer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"report_writer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""You are a professional research report writer.
+Synthesize all research into a comprehensive, well-structured report.
+
+Sources to use:
+WEB RESEARCH: {web_research}
+EXPERT ANALYSIS: {expert_analysis}  
+DATA ANALYSIS: {data_analysis}
+
+REPORT STRUCTURE:
+# [Report Title]
+**Date:** [date] | **Classification:** Research Report
+
+## Executive Summary (300 words)
+## 1. Background & Context
+## 2. Current Landscape
+## 3. Key Data & Statistics
+## 4. Expert Analysis
+## 5. Implications & Future Outlook
+## 6. Recommendations
+## 7. Sources & Methodology
+
+Write at graduate level. Be specific, cite data points.
+Target length: 1500-2000 words."""</span>,
+    output_key=<span class="str">"report_draft"</span>,
+)
+
+<span class="cm"># ═══ QUALITY CONTROL ═════════════════════════════</span>
+<span class="var">quality_reviewer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"quality_reviewer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Review this research report for quality.
+
+REPORT TO REVIEW:
+{report_draft}
+
+EVALUATE (score 1-10 each):
+- Accuracy and factual correctness
+- Completeness of coverage
+- Writing clarity and flow
+- Structure and formatting
+- Evidence and citations
+
+If ANY score < 7: List specific improvements, set escalate=false
+If ALL scores ≥ 7: Write "QUALITY APPROVED" and set escalate=true"""</span>,
+    output_key=<span class="str">"review_feedback"</span>,
+)
+
+<span class="var">revision_writer</span> = <span class="cls">LlmAgent</span>(
+    name=<span class="str">"revision_writer"</span>,
+    model=<span class="str">"gemini-2.0-flash"</span>,
+    instruction=<span class="str">"""Improve the research report based on reviewer feedback.
+
+CURRENT DRAFT:
+{report_draft}
+
+REVIEWER FEEDBACK:
+{review_feedback}
+
+Apply ALL feedback points. Maintain the same structure.
+Output the complete revised report."""</span>,
+    output_key=<span class="str">"report_draft"</span>,  <span class="cm"># overwrites previous draft</span>
+)
+
+<span class="var">quality_loop</span> = <span class="cls">LoopAgent</span>(
+    name=<span class="str">"quality_loop"</span>,
+    sub_agents=[<span class="var">quality_reviewer</span>, <span class="var">revision_writer</span>],
+    max_iterations=<span class="num">2</span>,
+)
+
+<span class="cm"># ═══ FINAL PIPELINE ══════════════════════════════</span>
+<span class="var">root_agent</span> = <span class="cls">SequentialAgent</span>(
+    name=<span class="str">"research_agency"</span>,
+    description=<span class="str">"Complete AI research agency: parallel research → write → quality control"</span>,
+    sub_agents=[
+        <span class="var">research_team</span>,   <span class="cm"># 3 agents in parallel</span>
+        <span class="var">report_writer</span>,   <span class="cm"># synthesize into report</span>
+        <span class="var">quality_loop</span>,    <span class="cm"># review and revise until quality</span>
+    ],
+)</pre>
+    </div>
+
+    <div class="cmd"><span class="cmd-ps">$</span><code>adk web</code><span class="cmd-note">Type: "Research the impact of AI on Indian education sector"</span></div>
+
+    <div class="summary">
+      <h4>🎓 Course Complete — You Now Know:</h4>
+      <ul class="checklist">
+        <li>Build any type of AI agent — from simple chatbots to complex orchestration systems</li>
+        <li>Create custom tools that call APIs, read files, do calculations</li>
+        <li>Use SequentialAgent, ParallelAgent, LoopAgent for complex workflows</li>
+        <li>Connect to MCP servers for filesystem, database, and service integrations</li>
+        <li>Evaluate and test agents systematically with ADK's eval framework</li>
+        <li>Debug agents visually using the ADK Web UI</li>
+        <li>Deploy production agents to Google Cloud Run</li>
+        <li>Apply professional best practices: error handling, logging, security</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     QUICK REFERENCE
+════════════════════════════════════════ -->
+<div style="margin-top:60px;padding-top:40px;border-top:1px solid var(--border)">
+  <h2 style="font-size:20px;font-weight:700;color:#0f1218;margin-bottom:24px">📋 ADK Quick Reference Card</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--w1);margin-bottom:12px">CLI COMMANDS</div>
+      <div class="cmd"><span class="cmd-ps">$</span><code>adk web</code><span class="cmd-note">browser UI</span></div>
+      <div class="cmd"><span class="cmd-ps">$</span><code>adk run &lt;folder&gt;</code><span class="cmd-note">CLI chat</span></div>
+      <div class="cmd"><span class="cmd-ps">$</span><code>adk eval &lt;agent&gt; &lt;tests&gt;</code><span class="cmd-note">evaluate</span></div>
+      <div class="cmd"><span class="cmd-ps">$</span><code>adk deploy cloud_run &lt;agent&gt;</code><span class="cmd-note">deploy</span></div>
+    </div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--w2);margin-bottom:12px">IMPORTS</div>
+      <div class="code-block" style="margin:0">
+        <pre style="padding:12px;font-size:12px"><span class="kw">from</span> <span class="dec">google.adk.agents</span> <span class="kw">import</span> (
+    <span class="cls">LlmAgent</span>, <span class="cls">SequentialAgent</span>,
+    <span class="cls">ParallelAgent</span>, <span class="cls">LoopAgent</span>
+)
+<span class="kw">from</span> <span class="dec">google.adk.tools</span> <span class="kw">import</span> <span class="var">google_search</span>
+<span class="kw">from</span> <span class="dec">google.adk.runners</span> <span class="kw">import</span> <span class="cls">Runner</span>
+<span class="kw">from</span> <span class="dec">google.adk.sessions</span> <span class="kw">import</span> (
+    <span class="cls">InMemorySessionService</span>,
+    <span class="cls">DatabaseSessionService</span>
+)</pre>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--w3);margin-bottom:12px">AGENT TYPE CHEATSHEET</div>
+      <table class="comp-table" style="font-size:12px">
+        <tr><td>LlmAgent</td><td>Think + decide + respond</td></tr>
+        <tr><td>SequentialAgent</td><td>A → B → C (pipeline)</td></tr>
+        <tr><td>ParallelAgent</td><td>A+B+C simultaneously</td></tr>
+        <tr><td>LoopAgent</td><td>Repeat until done</td></tr>
+      </table>
+    </div>
+
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
+      <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.1em;color:var(--w4);margin-bottom:12px">STATE PATTERN</div>
+      <div class="code-block" style="margin:0">
+        <pre style="padding:12px;font-size:12px"><span class="cm"># Agent 1: write to state</span>
+<span class="cls">LlmAgent</span>(
+    instruction=<span class="str">"..."</span>,
+    output_key=<span class="str">"my_key"</span>,  <span class="cm"># write</span>
+)
+
+<span class="cm"># Agent 2: read from state</span>
+<span class="cls">LlmAgent</span>(
+    instruction=<span class="str">"""Use: {my_key}"""</span>,  <span class="cm"># read</span>
+)</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</main>
+
+<button class="mob-toggle" id="mobToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+function toggleLecture(header) {
+  const lecture = header.parentElement;
+  lecture.classList.toggle('open');
+  updateProgress();
+}
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+    // auto-open
+    if (!el.classList.contains('open')) {
+      const h = el.querySelector('.lecture-header');
+      if (h) toggleLecture(h);
+    }
+    // update nav
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.lecture').length;
+  const open = document.querySelectorAll('.lecture.open').length;
+  const pct = Math.round((open/total)*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+// Intersection observer for nav highlights
+const lectures = document.querySelectorAll('.lecture');
+const navItems = document.querySelectorAll('.nav-item');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navItems.forEach(n => n.classList.remove('active'));
+      // find matching nav item
+    }
+  });
+}, {threshold:0.1});
+
+lectures.forEach(l => observer.observe(l));
+
+// Open first lecture on load
+window.addEventListener('load', () => {
+  const first = document.querySelector('.lecture');
+  if (first) {
+    const h = first.querySelector('.lecture-header');
+    if(h) toggleLecture(h);
+  }
+  updateProgress();
+});
+
+// Quiz functionality
+document.querySelectorAll('.quiz-opt').forEach(opt => {
+  opt.addEventListener('click', function() {
+    const correct = this.dataset.correct === 'true';
+    this.classList.add(correct ? 'correct' : 'wrong');
+  });
+});
+</script>
+</body>
+</html>
